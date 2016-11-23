@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+       <!-- <item android:id="@+id/nav_preferences"
+            android:icon="@android:drawable/ic_menu_preferences"
+            android:title="Preferences" />
+        <item android:id="@+id/nav_about"
+            android:icon="@android:drawable/ic_menu_info_details"
+            android:title="About" />-->
+        <item android:id="@+id/nav_edit_info"
+            android:icon="@drawable/ic_mode_edit_black_24dp"
+            android:title="Edit Information"/>
+        <item android:id="@+id/nav_upload_info"
+            android:icon="@drawable/ic_file_upload_black_24dp"
+            android:title="Update Information"/>
+        <item android:id="@+id/nav_settings"
+            android:icon="@drawable/ic_settings_black_24dp"
+            android:title="Settings"/>
+    </group>
+</menu>
