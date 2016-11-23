@@ -115,7 +115,7 @@ public class MainActivitys extends BaseActivity implements MapEventsReceiver, Ma
         //5. OpenStreetMap POIs with Nominatim
         NominatimPOIProvider poiProvider = new NominatimPOIProvider("OsmNavigator/1.0");
         //ArrayList<POI> pois = poiProvider.getPOICloseTo(startPoint, "school", 50, 0.1);
-        ArrayList<POI> pois = poiProvider.getPOIInside(oBB, select , 100);
+        ArrayList<POI> pois = poiProvider.getPOIInside(oBB, "school" , 100);
 
 
 
@@ -137,11 +137,6 @@ public class MainActivitys extends BaseActivity implements MapEventsReceiver, Ma
                 Marker poiMarker = new Marker(map);
                 poiMarker.setTitle(poi.mType);
                 poiMarker.setSnippet(poi.mDescription);
-
-                GeoPoint tests = poi.mLocation;
-
-              //  String test = poi.mDescription.;
-
                 //poiMarker.setSnippet(poi.);
                // poiMarker.setPosition(poi.mLocation);
                // Toast.makeText(this, "Tap on (" + tests.getLatitude() + "," + tests.getLongitude() + ")", Toast.LENGTH_SHORT).show();
