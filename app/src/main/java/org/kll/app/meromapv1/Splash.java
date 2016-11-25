@@ -32,7 +32,7 @@ public class Splash extends Activity {
                     {
 
                         Intent next = new Intent(Splash.this, MainActivitys.class);
-                        next.putExtra("Select", "Sank");
+                        next.putExtra("Select", "school");
                         startActivity(next);
                     }
                 });
