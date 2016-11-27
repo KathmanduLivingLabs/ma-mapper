@@ -27,7 +27,7 @@ public class DetailDatabaseHandler extends SQLiteOpenHelper {
                     COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                     COLUMN_NAME + " TEXT, " +
                     COLUMN_DIS + " TEXT, " +
-                    ")";
+                    ");";
 
 
     public DetailDatabaseHandler(Context context)
@@ -47,5 +47,6 @@ public class DetailDatabaseHandler extends SQLiteOpenHelper {
 
         db.execSQL("DROP TABLE IF EXISTS" + TABLE_POI);
         db.execSQL(TABLE_CREATE);
+        onCreate(db);
     }
 }

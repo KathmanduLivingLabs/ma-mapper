@@ -28,12 +28,14 @@ import static android.R.attr.detailColumn;
 
 public class DetailInfo extends BaseActivity{
 
-    private String getName;
-    private String getDisc;
+     String getName;
+     String getDisc;
     private Button ok;
     private Button edit;
     private Information newInfo;
     private DetailOperations infoData;
+
+    private DetailOperations dbHandler;
 
 
 
@@ -51,6 +53,9 @@ public class DetailInfo extends BaseActivity{
 
 
         setContentView(R.layout.detail_activity);
+
+        dbHandler = new DetailOperations(this);
+        dbHandler.open();
 
 
 
@@ -70,11 +75,15 @@ public class DetailInfo extends BaseActivity{
             @Override
             public void onClick(View v) {
 
+                //newInfo.setInfoName(getName.toString());
+               // newInfo.setInfoDescription(getDisc.toString());
+               //dbHandler.addInformation(newInfo);
 
-               // Toast.makeText(getApplicationContext(), "Name :" + newInfo.getInfoName(), Toast.LENGTH_SHORT).show();
-                Intent i = new Intent(DetailInfo.this, MainActivitys.class);
+                //Toast.makeText(getApplicationContext(), "Name :" + newInfo.getInfoName(), Toast.LENGTH_SHORT).show();
+                /*Intent i = new Intent(DetailInfo.this, MainActivitys.class);
                 i.putExtra("send", "school");
-                startActivity(i);
+                startActivity(i);*/
+                Toast.makeText(getApplicationContext(), "ok",Toast.LENGTH_SHORT).show();
 
             }
         });

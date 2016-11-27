@@ -8,6 +8,7 @@ package org.kll.app.meromapv1.Database;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
@@ -21,10 +22,16 @@ import org.kll.app.meromapv1.Model.Information;
 
 public class DetailOperations {
 
+    private DetailDatabaseHandler  detailDatabaseHandler;
+
+    private Context context;
+
+
+
     public static final String LOGTAG = "POI_SYS";
 
     SQLiteOpenHelper dbhandler;
-    SQLiteDatabase database;
+    private SQLiteDatabase database;
 
 
     private static final String[] allColumn = {
@@ -33,20 +40,22 @@ public class DetailOperations {
             DetailDatabaseHandler.COLUMN_DIS
     };
 
-    public DetailOperations(Context context)
+    public DetailOperations(Context c)
     {
-        dbhandler = new DetailDatabaseHandler(context);
+        context = c;
     }
 
-    public void open(){
+    public DetailOperations open() throws SQLException{
         Log.i(LOGTAG,"Database Opened");
-        database = dbhandler.getWritableDatabase();
 
+        detailDatabaseHandler = new DetailDatabaseHandler(context);
+        database = detailDatabaseHandler.getWritableDatabase();
+        return this;
 
     }
     public void close(){
         Log.i(LOGTAG, "Database Closed");
-        dbhandler.close();
+        detailDatabaseHandler.close();
 
     }
 
