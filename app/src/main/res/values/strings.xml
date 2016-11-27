@@ -15,4 +15,6 @@
 
     <string name="add_info">Ok</string>
     <string name="edit_info">Edit</string>
+    <string name="empty_list_text">list</string>
+    <string name="add_record">add</string>
 </resources>
