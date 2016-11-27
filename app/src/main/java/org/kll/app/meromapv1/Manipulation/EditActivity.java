@@ -1,10 +1,13 @@
-package org.kll.app.meromapv1;
+package org.kll.app.meromapv1.Manipulation;
 
 
 
 
 import android.os.Bundle;
 import android.view.MenuItem;
+
+import org.kll.app.meromapv1.BaseActivity;
+import org.kll.app.meromapv1.R;
 
 
 public class EditActivity extends BaseActivity {

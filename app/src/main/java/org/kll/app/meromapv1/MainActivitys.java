@@ -17,6 +17,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import org.kll.app.meromapv1.Manipulation.DetailInfo;
+import org.kll.app.meromapv1.Model.Information;
 import org.osmdroid.api.IMapController;
 import org.osmdroid.bonuspack.clustering.RadiusMarkerClusterer;
 import org.osmdroid.bonuspack.clustering.StaticCluster;
@@ -33,15 +35,10 @@ import org.osmdroid.bonuspack.location.NominatimPOIProvider;
 import org.osmdroid.bonuspack.location.OverpassAPIProvider;
 import org.osmdroid.bonuspack.location.POI;
 import org.osmdroid.bonuspack.overlays.GroundOverlay;
-import org.osmdroid.bonuspack.routing.OSRMRoadManager;
-import org.osmdroid.bonuspack.routing.Road;
-import org.osmdroid.bonuspack.routing.RoadManager;
-import org.osmdroid.bonuspack.routing.RoadNode;
 import org.osmdroid.events.MapEventsReceiver;
 import org.osmdroid.util.BoundingBox;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
-import org.osmdroid.views.overlay.FolderOverlay;
 import org.osmdroid.views.overlay.MapEventsOverlay;
 import org.osmdroid.views.overlay.Marker;
 import org.osmdroid.views.overlay.Marker.OnMarkerDragListener;
@@ -51,7 +48,7 @@ import org.osmdroid.views.overlay.Polyline;
 import org.osmdroid.views.overlay.infowindow.BasicInfoWindow;
 import org.osmdroid.views.overlay.infowindow.InfoWindow;
 import org.osmdroid.views.overlay.infowindow.MarkerInfoWindow;
-import org.kll.app.meromapv1.Database.*;
+
 
 import java.util.ArrayList;
 
@@ -59,9 +56,11 @@ public class MainActivitys extends Activity implements MapEventsReceiver, MapVie
 
     MapView map;
     KmlDocument mKmlDocument;
-    DetailDatabaseAdapter detailDatabaseAdapter;
 
+    private Information newInformation;
     String select;
+    String infoName;
+    String infoDiscription;
 
 
     @Override protected void onCreate(Bundle savedInstanceState) {
@@ -71,8 +70,7 @@ public class MainActivitys extends Activity implements MapEventsReceiver, MapVie
 
         //create a instance of SQLite database
 
-        detailDatabaseAdapter = new DetailDatabaseAdapter(this);
-        detailDatabaseAdapter = detailDatabaseAdapter.open();
+
 
 
 
@@ -129,10 +127,17 @@ public class MainActivitys extends Activity implements MapEventsReceiver, MapVie
                 poiMarker.setTitle(poi.mType);
                 poiMarker.setSnippet(poi.mDescription);
                 poiMarker.setPosition(poi.mLocation);
+                poiMarker.setPosition(poi.mLocation);
+
+
+
                 poiMarker.setIcon(poiIcon);
                 if (poi.mThumbnail != null) {
                     poiMarker.setImage(new BitmapDrawable(getResources(), poi.mThumbnail));
+
                 }
+
+
                 System.out.println(poi.mDescription);
 
                 poiMarker.setInfoWindow(new CustomInfoWindow(map));
@@ -242,7 +247,13 @@ public class MainActivitys extends Activity implements MapEventsReceiver, MapVie
                         Intent myIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(mSelectedPoi.mUrl));
                         view.getContext().startActivity(myIntent);
                     } else {
-                        //Toast.makeText(view.getContext(), "button clicked: "+ mSelectedPoi.mType, Toast.LENGTH_LONG).show();
+                        Intent DetailInfo = new Intent(MainActivitys.this, org.kll.app.meromapv1.Manipulation.DetailInfo.class);
+                        infoName = mSelectedPoi.mType;
+                        infoDiscription = mSelectedPoi.mDescription;
+                        DetailInfo.putExtra("DetailName", infoName);
+                        DetailInfo.putExtra("DetailDisc", infoDiscription);
+                        startActivity(DetailInfo);
+                        Toast.makeText(view.getContext(), "button clicked: "+ mSelectedPoi.mType, Toast.LENGTH_LONG).show();
 
 
 

@@ -1,5 +1,5 @@
 
-package org.kll.app.meromapv1;
+package org.kll.app.meromapv1.Manipulation;
 
 
 import android.content.Intent;
@@ -10,6 +10,10 @@ import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
+
+import org.kll.app.meromapv1.BaseActivity;
+import org.kll.app.meromapv1.MainActivitys;
+import org.kll.app.meromapv1.R;
 
 
 public class SettingsActivity extends BaseActivity {
