@@ -17,7 +17,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import org.kll.app.meromapv1.Manipulation.DetailInfo;
+
 import org.kll.app.meromapv1.Model.Information;
 import org.osmdroid.api.IMapController;
 import org.osmdroid.bonuspack.clustering.RadiusMarkerClusterer;
@@ -52,15 +52,19 @@ import org.osmdroid.views.overlay.infowindow.MarkerInfoWindow;
 
 import java.util.ArrayList;
 
-public class MainActivitys extends Activity implements MapEventsReceiver, MapView.OnFirstLayoutListener {
+public class MainActivitys extends BaseActivity implements MapEventsReceiver, MapView.OnFirstLayoutListener {
 
     MapView map;
     KmlDocument mKmlDocument;
 
-    private Information newInformation;
-    String select;
+
     String infoName;
     String infoDiscription;
+
+    String select;
+
+
+
 
 
     @Override protected void onCreate(Bundle savedInstanceState) {
@@ -75,7 +79,7 @@ public class MainActivitys extends Activity implements MapEventsReceiver, MapVie
 
 
 
-        String get = getIntent().getStringExtra("String");
+       String get = getIntent().getStringExtra("send");
         if(get == "school")
         {
             select = "school";
@@ -102,7 +106,7 @@ public class MainActivitys extends Activity implements MapEventsReceiver, MapVie
 
         //Using Nominatim
         NominatimPOIProvider poiProvider = new NominatimPOIProvider("OsmNavigator/1.0");
-        ArrayList<POI> pois = poiProvider.getPOICloseTo(startPoint, "school", 150, 0.1);
+        ArrayList<POI> pois = poiProvider.getPOICloseTo(startPoint, get, 150, 0.1);
         //or : ArrayList<POI> pois = poiProvider.getPOIAlong(road.getRouteLow(), "fuel", 50, 2.0);
 
 
@@ -390,5 +394,7 @@ public class MainActivitys extends Activity implements MapEventsReceiver, MapVie
         map.invalidate();
         return true;
     }
+
+
 
 }

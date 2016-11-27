@@ -1,6 +1,6 @@
 package org.kll.app.meromapv1.Model;
 
-import android.icu.text.IDNA;
+
 
 /**
  * Created by Rahul Singh Maharjan on 11/25/16.

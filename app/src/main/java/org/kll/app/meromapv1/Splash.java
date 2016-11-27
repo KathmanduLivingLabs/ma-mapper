@@ -17,7 +17,7 @@ import java.util.TimerTask;
 
 public class Splash extends Activity {
 
-    TextView text;
+
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,7 +32,7 @@ public class Splash extends Activity {
                     {
 
                         Intent next = new Intent(Splash.this, MainActivitys.class);
-                        next.putExtra("Select", "school");
+                       next.putExtra("send", "school");
                         startActivity(next);
                     }
                 });

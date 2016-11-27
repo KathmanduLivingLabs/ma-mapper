@@ -45,7 +45,7 @@ public class SettingsActivity extends BaseActivity {
                 Toast.makeText(SettingsActivity.this, optionselect.getText(), Toast.LENGTH_SHORT).show();
 
                 Intent next = new Intent(SettingsActivity.this, MainActivitys.class);
-                next.putExtra("Select", optionselect.getText());
+                next.putExtra("send", optionselect.getText());
                 startActivity(next);
             }
         });

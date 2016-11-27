@@ -66,7 +66,10 @@ public class DetailOperations {
 
     public Information getInformation(long id)
     {
-        Cursor cursor = database.query(DetailDatabaseHandler.TABLE_POI,allColumn,DetailDatabaseHandler.COLUMN_ID + "=?",new String[]{String.valueOf(id)},null,null, null, null);
+        Cursor cursor = database.query
+                (DetailDatabaseHandler.TABLE_POI,allColumn,
+                DetailDatabaseHandler.COLUMN_ID + "=?"
+                ,new String[]{String.valueOf(id)},null,null, null, null);
         if (cursor != null)
             cursor.moveToFirst();
 

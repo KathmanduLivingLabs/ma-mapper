@@ -17,7 +17,7 @@ public class DetailDatabaseHandler extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 1;
 
     public static final String TABLE_POI =  "poi";
-    public static final String COLUMN_ID = "poiID";
+   public static final String COLUMN_ID = "poiID";
     public static final String COLUMN_NAME = "name";
     public static final String COLUMN_DIS = "description";
 
@@ -46,5 +46,6 @@ public class DetailDatabaseHandler extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
         db.execSQL("DROP TABLE IF EXISTS" + TABLE_POI);
+        db.execSQL(TABLE_CREATE);
     }
 }

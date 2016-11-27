@@ -45,9 +45,14 @@ public class DetailInfo extends BaseActivity{
         getName = getIntent().getStringExtra("DetailName");
         getDisc = getIntent().getStringExtra("DetailDisc");
 
+        newInfo = new Information();
+        infoData = new DetailOperations(DetailInfo.this);
+    //    infoData.open();
 
 
         setContentView(R.layout.detail_activity);
+
+
 
         final TextView textNametoChange = (TextView) findViewById(R.id.text_infoname);
         final TextView textDisctoChange = (TextView) findViewById(R.id.text_infodisc);
@@ -55,22 +60,20 @@ public class DetailInfo extends BaseActivity{
         textDisctoChange.setText(getDisc);
         ok = (Button) findViewById(R.id.info_ok);
 
-        infoData = new DetailOperations(this);
-        infoData.open();
+
+
+
 
 
         ok.setOnClickListener(new View.OnClickListener(){
 
             @Override
             public void onClick(View v) {
-               /* newInfo.setInfoName(getName.toString());
-                newInfo.setInfoDescription(getDisc.toString());*/
-              //  infoData.addInformation(newInfo);
 
 
                // Toast.makeText(getApplicationContext(), "Name :" + newInfo.getInfoName(), Toast.LENGTH_SHORT).show();
                 Intent i = new Intent(DetailInfo.this, MainActivitys.class);
-                i.putExtra("Select", "school");
+                i.putExtra("send", "school");
                 startActivity(i);
 
             }
