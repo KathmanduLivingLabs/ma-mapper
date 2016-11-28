@@ -1,4 +1,4 @@
-package org.kll.app.meromapv1;
+package org.kll.app.meromapv1.FrontActivity;
 
 /**
  * Created by Rahul Singh Maharjan on 10/24/16.
@@ -7,12 +7,9 @@ package org.kll.app.meromapv1;
 
 
 import android.Manifest;
-import android.app.Activity;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.PointF;
 import android.location.Location;
@@ -20,27 +17,19 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
-import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
-import android.view.View;
-import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
-import android.widget.RelativeLayout;
 import android.widget.TableLayout;
 import android.widget.TextView;
 import android.util.Log;
 import android.widget.Toast;
 
 import com.mapbox.mapboxsdk.MapboxAccountManager;
-import com.mapbox.mapboxsdk.annotations.Marker;
 import com.mapbox.mapboxsdk.annotations.MarkerOptions;
-import com.mapbox.mapboxsdk.annotations.MarkerViewOptions;
 import com.mapbox.mapboxsdk.camera.CameraUpdateFactory;
 import com.mapbox.mapboxsdk.constants.MyLocationTracking;
 import com.mapbox.mapboxsdk.geometry.LatLng;
@@ -52,30 +41,18 @@ import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
 
 //for geocoding
-import org.osmdroid.views.overlay.Overlay;
-
-import java.util.List;
-import java.util.Map;
+import org.kll.app.meromapv1.R;
 
 import de.westnordost.osmapi.OsmConnection;
 import de.westnordost.osmapi.map.MapDataDao;
 import de.westnordost.osmapi.map.data.BoundingBox;
 import de.westnordost.osmapi.map.data.Element;
-import de.westnordost.osmapi.map.data.LatLon;
 import de.westnordost.osmapi.map.data.Node;
-import de.westnordost.osmapi.map.data.OsmLatLon;
 import de.westnordost.osmapi.map.data.Relation;
 import de.westnordost.osmapi.map.data.Way;
 import de.westnordost.osmapi.map.handler.MapDataHandler;
 import de.westnordost.osmapi.map.handler.OneElementTypeHandler;
-import de.westnordost.osmapi.notes.Note;
-import de.westnordost.osmapi.notes.NotesDao;
-import retrofit.Callback;
-import retrofit.Response;
-import retrofit.Retrofit;
 
-import static android.view.View.*;
-import static android.widget.Toast.LENGTH_LONG;
 import static junit.framework.Assert.assertTrue;
 
 
@@ -133,7 +110,7 @@ public class MapActivity extends BaseActivity {
         /*
         Check if the GPS location is activated or Not
         */
-        LocationManager mlocManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+        LocationManager mlocManager = (LocationManager) this.getSystemService(LOCATION_SERVICE);
         boolean enabled = mlocManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
 
         if(!enabled) {

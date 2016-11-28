@@ -1,19 +1,20 @@
 package org.kll.app.meromapv1.Manipulation;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v4.widget.SimpleCursorAdapter;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 
 import org.kll.app.meromapv1.Database.DBManager;
 import org.kll.app.meromapv1.Database.DatabaseHelper;
+import org.kll.app.meromapv1.FrontActivity.BaseActivity;
 import org.kll.app.meromapv1.R;
 
 /**
@@ -21,20 +22,25 @@ import org.kll.app.meromapv1.R;
  * Project for Kathmandu Living Labs
  */
 
-public class ListActivity extends Activity{
+public class ListActivity extends BaseActivity{
 
     private DBManager dbManager;
 
     private ListView listView;
 
-    private SimpleCursorAdapter adapter;
-
+    private android.support.v4.widget.SimpleCursorAdapter adapter;
 
     final String[] from = new String[] { DatabaseHelper._ID,
             DatabaseHelper.NAME, DatabaseHelper.DESC };
 
-    final int[] to = new int[] {R.id.title_list};
+    final int[] to = new int[] { R.id.id, R.id.title, R.id.desc };
 
+
+    @Override
+    protected boolean useDrawerToggle() {
+        return false;
+
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,11 +55,12 @@ public class ListActivity extends Activity{
         listView = (ListView) findViewById(R.id.list_view);
         listView.setEmptyView(findViewById(R.id.empty));
 
-        adapter = new SimpleCursorAdapter(this, R.layout.activity_view_record, cursor, from, to, 0);
+        adapter = new SimpleCursorAdapter(this, R.layout.list_activity, cursor, from, to, 0);
         adapter.notifyDataSetChanged();
 
         listView.setAdapter(adapter);
 
+        // OnCLickListiner For List Items
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long viewId) {
@@ -65,9 +72,9 @@ public class ListActivity extends Activity{
                 String title = titleTextView.getText().toString();
                 String desc = descTextView.getText().toString();
 
-                Intent modify_intent = new Intent(getApplicationContext(), EditActivity.class);
-                modify_intent.putExtra("Name:", title);
-                modify_intent.putExtra("description", desc);
+                Intent modify_intent = new Intent(getApplicationContext(), ModifyActivity.class);
+                modify_intent.putExtra("name", title);
+                modify_intent.putExtra("desc", desc);
                 modify_intent.putExtra("id", id);
 
                 startActivity(modify_intent);
@@ -79,6 +86,19 @@ public class ListActivity extends Activity{
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu, menu);
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        int id = item.getItemId();
+        if (id == R.id.add_record) {
+
+            Intent add_mem = new Intent(this, DetailInfo.class);
+            startActivity(add_mem);
+
+        }
+        return super.onOptionsItemSelected(item);
     }
 
 

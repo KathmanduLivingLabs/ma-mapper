@@ -19,7 +19,7 @@
         android:theme="@style/AppTheme">
         <service android:name="com.mapbox.mapboxsdk.telemetry.TelemetryService" />
         <activity
-            android:name=".Splash">
+            android:name=".FrontActivity.Splash">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -28,12 +28,12 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".MainActivitys"
+        <activity android:name=".FrontActivity.MainActivitys"
             android:label="@string/title_activity_base"
             android:theme="@style/AppTheme.NoActionBar"/>
 
 
-        <activity android:name=".BaseActivity"
+        <activity android:name=".FrontActivity.BaseActivity"
             android:label="@string/title_activity_base"
             android:theme="@style/AppTheme.NoActionBar"/>
 
@@ -45,7 +45,7 @@
             android:label="@string/poi_edit"
             android:theme="@style/AppTheme.NoActionBar"/>
 
-        <activity android:name=".UploadActivity"
+        <activity android:name=".Manipulation.ModifyActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar"/>
 

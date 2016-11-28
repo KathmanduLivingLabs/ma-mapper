@@ -1,13 +1,12 @@
 package org.kll.app.meromapv1.Manipulation;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import org.kll.app.meromapv1.BaseActivity;
 import org.kll.app.meromapv1.Database.DBManager;
 import org.kll.app.meromapv1.R;
 
@@ -27,12 +26,13 @@ public class DetailInfo extends Activity{
 
 
 
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
+
+
 
         setContentView(R.layout.activity_view_record);
         getName = getIntent().getStringExtra("DetailName");
@@ -45,8 +45,15 @@ public class DetailInfo extends Activity{
         textDisctoChange.setText(getDisc);
         ok = (Button) findViewById(R.id.edit_query);
 
-        dbManager = new DBManager(this);
+       /* dbManager = new DBManager(this);
         dbManager.open();
+
+        Log.d("Inserting: ", "Inserting ..");
+        dbManager.insert(getName, getDisc);
+        dbManager.insert("Koteshowr", "School");
+
+        Log.d("reading:","reading ...");
+*/
 
 
         ok.setOnClickListener(new View.OnClickListener(){
@@ -63,9 +70,14 @@ public class DetailInfo extends Activity{
                 i.putExtra("send", "school");
                 startActivity(i);*/
 
-                dbManager.insert(getName, getDisc);
-                Toast.makeText(getApplicationContext(), "ok",Toast.LENGTH_SHORT).show();
+                /*dbManager.insert(getName, getDisc);*/
+              //  Toast.makeText(getApplicationContext(), "ok",Toast.LENGTH_SHORT).show();
 
+
+                Intent add_mem = new Intent(getApplicationContext(), EditActivity.class);
+                add_mem.putExtra("Name", getName);
+                add_mem.putExtra("Desc", getDisc);
+                startActivity(add_mem);
             }
         });
 

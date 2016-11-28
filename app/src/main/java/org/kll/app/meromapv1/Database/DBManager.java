@@ -60,5 +60,7 @@ public class DBManager {
         database.delete(DatabaseHelper.TABLE_NAME, DatabaseHelper._ID + "=" + _id, null);
     }
 
+
+
 }
 
