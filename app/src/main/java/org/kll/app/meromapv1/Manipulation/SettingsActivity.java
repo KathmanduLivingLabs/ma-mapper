@@ -1,5 +1,5 @@
 
-package org.kll.app.meromapv1;
+package org.kll.app.meromapv1.Manipulation;
 
 
 import android.content.Intent;
@@ -10,6 +10,10 @@ import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
+
+import org.kll.app.meromapv1.FrontActivity.BaseActivity;
+import org.kll.app.meromapv1.FrontActivity.MainActivitys;
+import org.kll.app.meromapv1.R;
 
 
 public class SettingsActivity extends BaseActivity {
@@ -41,7 +45,7 @@ public class SettingsActivity extends BaseActivity {
                 Toast.makeText(SettingsActivity.this, optionselect.getText(), Toast.LENGTH_SHORT).show();
 
                 Intent next = new Intent(SettingsActivity.this, MainActivitys.class);
-                next.putExtra("Select", optionselect.getText());
+                next.putExtra("send", optionselect.getText());
                 startActivity(next);
             }
         });

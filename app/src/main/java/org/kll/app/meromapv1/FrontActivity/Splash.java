@@ -1,11 +1,10 @@
-package org.kll.app.meromapv1;
+package org.kll.app.meromapv1.FrontActivity;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.TextView;
+
+import org.kll.app.meromapv1.R;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -17,11 +16,13 @@ import java.util.TimerTask;
 
 public class Splash extends Activity {
 
-    TextView text;
+
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.splash);
+
+
 
 
         new Timer().schedule(new TimerTask() {
@@ -32,7 +33,7 @@ public class Splash extends Activity {
                     {
 
                         Intent next = new Intent(Splash.this, MainActivitys.class);
-                        next.putExtra("Select", "Sank");
+                       next.putExtra("send", "school");
                         startActivity(next);
                     }
                 });

@@ -1,9 +1,7 @@
-package org.kll.app.meromapv1;
+package org.kll.app.meromapv1.FrontActivity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 import android.support.annotation.LayoutRes;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -14,6 +12,10 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
+
+import org.kll.app.meromapv1.Manipulation.ListActivity;
+import org.kll.app.meromapv1.Manipulation.SettingsActivity;
+import org.kll.app.meromapv1.R;
 
 public class BaseActivity extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener {
@@ -114,23 +116,18 @@ public class BaseActivity extends AppCompatActivity implements
                 /*startActivity(new Intent(this, MainActivity.class));*/
                 return true;
 
-            case R.id.action_bank:
-                /**/
-
-                /*Intent Bank = new Intent(this, MainActivity.class);
-                Bank.putExtra("Bank", "bank");
-                startActivity(Bank);*/
-                return true;
-
-            case R.id.action_school :
-                /*startActivity(new Intent(this, EditActivity.class));*/
+            case R.id.list_edit_upload_delete :
+                startActivity(new Intent(this, ListActivity.class));
 
                 /*Intent School = new Intent(this, MainActivity.class);
                 School.putExtra("School", "school");
                 startActivity(School);*/
+
+                Intent lists = new Intent(this, ListActivity.class);
+                startActivity(lists);
                 return true;
 
-            case R.id.action_hospital :
+            case R.id.select_tags :
                 startActivity(new Intent(this, SettingsActivity.class));
 
                /* Intent Hospital = new Intent(this, MainActivity.class);

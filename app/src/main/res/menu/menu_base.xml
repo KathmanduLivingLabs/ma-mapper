@@ -4,17 +4,14 @@
         android:id="@+id/action_main"
         android:icon="@android:drawable/ic_btn_speak_now"
         android:title="Back"/>
-    <item
-        android:id="@+id/action_school"
-        android:title="School"
-        android:icon="@drawable/ic_file_upload_black_24dp"
+
 />
     <item
-        android:id="@+id/action_bank"
+        android:id="@+id/list_edit_upload_delete"
         android:icon="@drawable/ic_mode_edit_black_24dp"
-        android:title="Banks"/>
+        android:title="List/Edit/Upload"/>
     <item
-        android:id="@+id/action_hospital"
+        android:id="@+id/select_tags"
         android:icon="@drawable/ic_settings_black_24dp"
-        android:title="Settings"/>
+        android:title="Select Tag"/>
 </menu>

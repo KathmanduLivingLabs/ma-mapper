@@ -1,6 +1,4 @@
-package org.kll.app.meromapv1;
-
-import android.app.Activity;
+package org.kll.app.meromapv1.FrontActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -18,12 +16,14 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+
+import org.kll.app.meromapv1.Location.GPSTracker;
+import org.kll.app.meromapv1.R;
 import org.osmdroid.api.IMapController;
 import org.osmdroid.bonuspack.clustering.RadiusMarkerClusterer;
 import org.osmdroid.bonuspack.clustering.StaticCluster;
 import org.osmdroid.bonuspack.kml.KmlDocument;
 import org.osmdroid.bonuspack.kml.KmlFeature;
-import org.osmdroid.bonuspack.kml.KmlFolder;
 import org.osmdroid.bonuspack.kml.KmlLineString;
 import org.osmdroid.bonuspack.kml.KmlPlacemark;
 import org.osmdroid.bonuspack.kml.KmlPoint;
@@ -31,18 +31,12 @@ import org.osmdroid.bonuspack.kml.KmlPolygon;
 import org.osmdroid.bonuspack.kml.KmlTrack;
 import org.osmdroid.bonuspack.kml.Style;
 import org.osmdroid.bonuspack.location.NominatimPOIProvider;
-import org.osmdroid.bonuspack.location.OverpassAPIProvider;
 import org.osmdroid.bonuspack.location.POI;
 import org.osmdroid.bonuspack.overlays.GroundOverlay;
-import org.osmdroid.bonuspack.routing.OSRMRoadManager;
-import org.osmdroid.bonuspack.routing.Road;
-import org.osmdroid.bonuspack.routing.RoadManager;
-import org.osmdroid.bonuspack.routing.RoadNode;
 import org.osmdroid.events.MapEventsReceiver;
 import org.osmdroid.util.BoundingBox;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
-import org.osmdroid.views.overlay.FolderOverlay;
 import org.osmdroid.views.overlay.MapEventsOverlay;
 import org.osmdroid.views.overlay.Marker;
 import org.osmdroid.views.overlay.Marker.OnMarkerDragListener;
@@ -53,75 +47,89 @@ import org.osmdroid.views.overlay.infowindow.BasicInfoWindow;
 import org.osmdroid.views.overlay.infowindow.InfoWindow;
 import org.osmdroid.views.overlay.infowindow.MarkerInfoWindow;
 
-import java.util.ArrayList;
 
+import java.util.ArrayList;
 
 public class MainActivitys extends BaseActivity implements MapEventsReceiver, MapView.OnFirstLayoutListener {
 
     MapView map;
     KmlDocument mKmlDocument;
+
+
+    String infoName;
+    String infoDiscription;
+
     String select;
+
+
+    GPSTracker gps;
+
+    double latitude;
+    double longitude;
+
+
 
 
     @Override protected void onCreate(Bundle savedInstanceState) {
 
-        Bundle bundle = getIntent().getExtras();
-        //int value = bundle.getInt("Select");
-
-        String test = bundle.getString("Select");
-        if(test.equals("Bank"))
-        {
-            select = "bank";
-        }
-        else
-        {
-            select = "School";
-        }
-
-
-      /*  if(value == 1)
-        {
-            select = "school";
-        }
-        else if(value == 2)
-        {
-            select = "bank";
-        }*/
-
-
-
-
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
-        //Introduction
+        //create a instance of SQLite database
+
+        gps = new GPSTracker(MainActivitys.this);
+
+        if(gps.canGetLocation()){
+
+            latitude = gps.getLatitude();
+            longitude = gps.getLongitude();
+            //Toast.makeText(getApplicationContext(), "Your Location is - \nLat: " + latitude + "\nLong: " + longitude, Toast.LENGTH_LONG).show();
+        }else{
+            // can't get location
+            // GPS or Network is not enabled
+            // Ask user to enable GPS/network in settings
+            gps.showSettingsAlert();
+        }
+
+
+
+
+        String get = getIntent().getStringExtra("send");
+        if(get == "school")
+        {
+            select = "school";
+        }
+        else if(get == "bank")
+        {
+            select = "bank";
+        }
+
+
+        //defining maps and geolocation
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         map = (MapView) findViewById(R.id.map);
         map.setBuiltInZoomControls(true);
         map.setMultiTouchControls(true);
-        GeoPoint startPoint = new GeoPoint(
-                27.7340100,
-                85.3368240);
+        GeoPoint startPoint = new GeoPoint(longitude, latitude);
+        //GeoPoint startPoint = new GeoPoint(27.7360100,
+        //        85.3355140);
         IMapController mapController = map.getController();
-        mapController.setZoom(15);
+        mapController.setZoom(20);
         mapController.setCenter(startPoint);
 
 
-
-        BoundingBox oBB = new BoundingBox(startPoint.getLatitude()+0.0055, startPoint.getLongitude() +0.0055 ,
-                startPoint.getLatitude() - 0.0055, startPoint.getLongitude() - 0.0055);
-
-        //5. OpenStreetMap POIs with Nominatim
+        //Using Nominatim
         NominatimPOIProvider poiProvider = new NominatimPOIProvider("OsmNavigator/1.0");
-        //ArrayList<POI> pois = poiProvider.getPOICloseTo(startPoint, "school", 50, 0.1);
-        ArrayList<POI> pois = poiProvider.getPOIInside(oBB, "school" , 100);
+        ArrayList<POI> pois = poiProvider.getPOICloseTo(startPoint, get, 150, 0.1);
+        //or : ArrayList<POI> pois = poiProvider.getPOIAlong(road.getRouteLow(), "fuel", 50, 2.0);
 
 
-
+        //FolderOverlay poiMarkers = new FolderOverlay(this);
+        // Marker Clustering
         RadiusMarkerClusterer poiMarkers = new RadiusMarkerClusterer(this);
-        //end of 10.
-        //11.1 Customizing the clusters design
+
+        //Customizing the clusters design
         Drawable clusterIconD = ResourcesCompat.getDrawable(getResources(), R.drawable.marker_poi_cluster, null);
         Bitmap clusterIcon = ((BitmapDrawable) clusterIconD).getBitmap();
         poiMarkers.setIcon(clusterIcon);
@@ -137,30 +145,33 @@ public class MainActivitys extends BaseActivity implements MapEventsReceiver, Ma
                 Marker poiMarker = new Marker(map);
                 poiMarker.setTitle(poi.mType);
                 poiMarker.setSnippet(poi.mDescription);
-                //poiMarker.setSnippet(poi.);
-               // poiMarker.setPosition(poi.mLocation);
-               // Toast.makeText(this, "Tap on (" + tests.getLatitude() + "," + tests.getLongitude() + ")", Toast.LENGTH_SHORT).show();
+                poiMarker.setPosition(poi.mLocation);
+                poiMarker.setPosition(poi.mLocation);
+
+
+
                 poiMarker.setIcon(poiIcon);
                 if (poi.mThumbnail != null) {
                     poiMarker.setImage(new BitmapDrawable(getResources(), poi.mThumbnail));
+
                 }
-                // 7.
+
+
+                System.out.println(poi.mDescription);
+
                 poiMarker.setInfoWindow(new CustomInfoWindow(map));
                 poiMarker.setRelatedObject(poi);
                 poiMarkers.add(poiMarker);
             }
         }
 
-        //12. Loading KML content
-
-       /* mKmlDocument = new KmlDocument();
-        //boolean ok = mKmlDocument.parseKMLUrl(url);
-
+       /* //12. Loading KML content
+        mKmlDocument = new KmlDocument();
         //Get OpenStreetMap content as KML with Overpass API:
         OverpassAPIProvider overpassProvider = new OverpassAPIProvider();
         BoundingBox oBB = new BoundingBox(startPoint.getLatitude() + 0.25, startPoint.getLongitude() + 0.25,
                 startPoint.getLatitude() - 0.25, startPoint.getLongitude() - 0.25);
-        String oUrl = overpassProvider.urlForTagSearchKml("amenity=school", oBB, 500, 30);
+        String oUrl = overpassProvider.urlForTagSearchKml("highway=speed_camera", oBB, 500, 30);
         boolean ok = overpassProvider.addInKmlFolder(mKmlDocument.mKmlRoot, oUrl);
 
         if (ok) {
@@ -185,14 +196,13 @@ public class MainActivitys extends BaseActivity implements MapEventsReceiver, Ma
         //14. Grab overlays in KML structure, save KML document locally
         if (mKmlDocument.mKmlRoot != null) {
             KmlFolder root = mKmlDocument.mKmlRoot;
-          //  root.addOverlay(roadOverlay, mKmlDocument);
-          //  root.addOverlay(roadMarkers, mKmlDocument);
             mKmlDocument.saveAsKML(mKmlDocument.getDefaultPathForAndroid("my_route.kml"));
             //15. Loading and saving of GeoJSON content
             mKmlDocument.saveAsGeoJSON(mKmlDocument.getDefaultPathForAndroid("my_route.json"));
-        }*/
+        }
+*/
 
-        //16. Handling Map events
+        // Handling Map events
         MapEventsOverlay mapEventsOverlay = new MapEventsOverlay(this);
         map.getOverlays().add(0, mapEventsOverlay); //inserted at the "bottom" of all overlays
     }
@@ -213,9 +223,8 @@ public class MainActivitys extends BaseActivity implements MapEventsReceiver, Ma
         if (mInitialBoundingBox != null)
             map.zoomToBoundingBox(mInitialBoundingBox, false);
     }
-    //---
 
-    //0. Using the Marker and Polyline overlays - advanced options
+    //Using the Marker and Polyline overlays - advanced options
     class OnMarkerDragListenerDrawer implements OnMarkerDragListener {
         ArrayList<GeoPoint> mTrace;
         Polyline mPolyline;
@@ -244,22 +253,29 @@ public class MainActivitys extends BaseActivity implements MapEventsReceiver, Ma
         }
     }
 
-    //7. Customizing the bubble behaviour
+    //Customizing the bubble behaviour
     class CustomInfoWindow extends MarkerInfoWindow {
         POI mSelectedPoi;
 
         public CustomInfoWindow(MapView mapView) {
-            super(R.layout.bonuspack_bubble, mapView);
-            Button btn = (Button) (mView.findViewById(R.id.bubble_moreinfo));
+            super(org.osmdroid.bonuspack.R.layout.bonuspack_bubble, mapView);
+            Button btn = (Button) (mView.findViewById(org.osmdroid.bonuspack.R.id.bubble_moreinfo));
             btn.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View view) {
                     if (mSelectedPoi.mUrl != null) {
                         Intent myIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(mSelectedPoi.mUrl));
                         view.getContext().startActivity(myIntent);
                     } else {
-                        Toast.makeText(view.getContext(), "Button clicked", Toast.LENGTH_LONG).show();
-                        Intent myNext = new Intent(getBaseContext(), EditActivity.class);
-                        startActivity(myNext);
+                        Intent DetailInfo = new Intent(MainActivitys.this, org.kll.app.meromapv1.Manipulation.DetailInfo.class);
+                        infoName = mSelectedPoi.mType;
+                        infoDiscription = mSelectedPoi.mDescription;
+                        DetailInfo.putExtra("DetailName", infoName);
+                        DetailInfo.putExtra("DetailDisc", infoDiscription);
+                        startActivity(DetailInfo);
+                        Toast.makeText(view.getContext(), "button clicked: "+ mSelectedPoi.mType, Toast.LENGTH_LONG).show();
+
+
+
                     }
                 }
             });
@@ -272,7 +288,7 @@ public class MainActivitys extends BaseActivity implements MapEventsReceiver, Ma
             Marker marker = (Marker) item;
             mSelectedPoi = (POI) marker.getRelatedObject();
 
-            //8. put thumbnail image in bubble, fetching the thumbnail in background:
+            // put thumbnail image in bubble, fetching the thumbnail in background:
             if (mSelectedPoi.mThumbnailPath != null) {
                 ImageView imageView = (ImageView) mView.findViewById(org.osmdroid.bonuspack.R.id.bubble_image);
                 mSelectedPoi.fetchThumbnailOnThread(imageView);
@@ -280,7 +296,7 @@ public class MainActivitys extends BaseActivity implements MapEventsReceiver, Ma
         }
     }
 
-    //11.2 Customizing the clusters design - and beyond
+    //Customizing the clusters design - and beyond
     class CirclesGridMarkerClusterer extends RadiusMarkerClusterer {
 
         public CirclesGridMarkerClusterer(Context ctx) {
@@ -316,7 +332,7 @@ public class MainActivitys extends BaseActivity implements MapEventsReceiver, Ma
         }
     }
 
-    //13.2 Loading KML content - Advanced styling with Styler
+    //Loading KML content - Advanced styling with Styler
     class MyKmlStyler implements KmlFeature.Styler {
         Style mDefaultStyle;
 
@@ -357,7 +373,7 @@ public class MainActivitys extends BaseActivity implements MapEventsReceiver, Ma
         }
     }
 
-    //16. Handling Map events
+    //Handling Map events
     @Override
     public boolean singleTapConfirmedHelper(GeoPoint p) {
         Toast.makeText(this, "Tap on (" + p.getLatitude() + "," + p.getLongitude() + ")", Toast.LENGTH_SHORT).show();
@@ -368,8 +384,8 @@ public class MainActivitys extends BaseActivity implements MapEventsReceiver, Ma
     float mGroundOverlayBearing = 0.0f;
 
     @Override public boolean longPressHelper(GeoPoint p) {
-        //Toast.makeText(this, "Long press", Toast.LENGTH_SHORT).show();
-        //17. Using Polygon, defined as a circle:
+
+        // Using Polygon, defined as a circle:
         Polygon circle = new Polygon();
         circle.setPoints(Polygon.pointsAsCircle(p, 2000.0));
         circle.setFillColor(0x12121212);
@@ -392,6 +408,9 @@ public class MainActivitys extends BaseActivity implements MapEventsReceiver, Ma
 
         map.invalidate();
         return true;
+
     }
+
+
 
 }
