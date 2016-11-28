@@ -23,4 +23,5 @@
     <string name="enter_desc">Description</string>
     <string name="btn_update">Update</string>
     <string name="btn_delete">Delete</string>
+    <string name="enter_contact">Phone Number</string>
 </resources>

@@ -20,6 +20,7 @@ public class ModifyActivity extends Activity implements View.OnClickListener{
     private EditText titleText;
     private Button updateBtn, deleteBtn;
     private EditText descText;
+    private EditText contText;
 
     private long _id;
 
@@ -40,6 +41,7 @@ public class ModifyActivity extends Activity implements View.OnClickListener{
 
         titleText = (EditText) findViewById(R.id.subject_edittext);
         descText = (EditText) findViewById(R.id.description_edittext);
+        contText = (EditText) findViewById(R.id.description_editcontact);
 
         updateBtn = (Button) findViewById(R.id.btn_update);
         deleteBtn = (Button) findViewById(R.id.btn_delete);
@@ -48,11 +50,14 @@ public class ModifyActivity extends Activity implements View.OnClickListener{
         String id = intent.getStringExtra("id");
         String name = intent.getStringExtra("title");
         String desc = intent.getStringExtra("desc");
+        String cont = intent.getStringExtra("cont");
 
         _id = Long.parseLong(id);
 
         titleText.setText(name);
         descText.setText(desc);
+        contText.setText(cont);
+
 
         updateBtn.setOnClickListener(this);
         deleteBtn.setOnClickListener(this);
@@ -64,8 +69,8 @@ public class ModifyActivity extends Activity implements View.OnClickListener{
             case R.id.btn_update:
                 String title = titleText.getText().toString();
                 String desc = descText.getText().toString();
-
-                dbManager.update(_id, title, desc);
+                String cont = contText.getText().toString();
+                dbManager.update(_id, title, desc, cont);
                 this.returnHome();
                 break;
 

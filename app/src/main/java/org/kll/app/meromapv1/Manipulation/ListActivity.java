@@ -16,6 +16,7 @@ import org.kll.app.meromapv1.Database.DBManager;
 import org.kll.app.meromapv1.Database.DatabaseHelper;
 import org.kll.app.meromapv1.FrontActivity.BaseActivity;
 import org.kll.app.meromapv1.R;
+import org.w3c.dom.Text;
 
 /**
  * Created by Rahul Singh Maharjan on 11/27/16.
@@ -31,9 +32,9 @@ public class ListActivity extends BaseActivity{
     private android.support.v4.widget.SimpleCursorAdapter adapter;
 
     final String[] from = new String[] { DatabaseHelper._ID,
-            DatabaseHelper.NAME, DatabaseHelper.DESC };
+            DatabaseHelper.NAME, DatabaseHelper.DESC , DatabaseHelper.CONTACT};
 
-    final int[] to = new int[] { R.id.id, R.id.title, R.id.desc };
+    final int[] to = new int[] { R.id.id, R.id.title, R.id.desc, R.id.contact};
 
 
     @Override
@@ -67,14 +68,17 @@ public class ListActivity extends BaseActivity{
                 TextView idTextView = (TextView) view.findViewById(R.id.id);
                 TextView titleTextView = (TextView) view.findViewById(R.id.title);
                 TextView descTextView = (TextView) view.findViewById(R.id.desc);
+                TextView contTextView = (TextView) view.findViewById(R.id.contact);
 
                 String id = idTextView.getText().toString();
                 String title = titleTextView.getText().toString();
                 String desc = descTextView.getText().toString();
+                String cont = contTextView.getText().toString();
 
                 Intent modify_intent = new Intent(getApplicationContext(), ModifyActivity.class);
                 modify_intent.putExtra("name", title);
                 modify_intent.putExtra("desc", desc);
+                modify_intent.putExtra("cont", cont);
                 modify_intent.putExtra("id", id);
 
                 startActivity(modify_intent);

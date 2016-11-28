@@ -20,9 +20,7 @@ public class DetailInfo extends Activity{
      String getName;
      String getDisc;
     private Button ok;
-    private Button edit;
 
-    private DBManager dbManager;
 
 
 
@@ -45,33 +43,11 @@ public class DetailInfo extends Activity{
         textDisctoChange.setText(getDisc);
         ok = (Button) findViewById(R.id.edit_query);
 
-       /* dbManager = new DBManager(this);
-        dbManager.open();
-
-        Log.d("Inserting: ", "Inserting ..");
-        dbManager.insert(getName, getDisc);
-        dbManager.insert("Koteshowr", "School");
-
-        Log.d("reading:","reading ...");
-*/
-
-
         ok.setOnClickListener(new View.OnClickListener(){
 
             @Override
             public void onClick(View v) {
 
-                //newInfo.setInfoName(getName.toString());
-               // newInfo.setInfoDescription(getDisc.toString());
-               //dbHandler.addInformation(newInfo);
-
-                //Toast.makeText(getApplicationContext(), "Name :" + newInfo.getInfoName(), Toast.LENGTH_SHORT).show();
-                /*Intent i = new Intent(DetailInfo.this, MainActivitys.class);
-                i.putExtra("send", "school");
-                startActivity(i);*/
-
-                /*dbManager.insert(getName, getDisc);*/
-              //  Toast.makeText(getApplicationContext(), "ok",Toast.LENGTH_SHORT).show();
 
 
                 Intent add_mem = new Intent(getApplicationContext(), EditActivity.class);

@@ -118,11 +118,17 @@ public class MainActivitys extends BaseActivity implements MapEventsReceiver, Ma
         mapController.setZoom(20);
         mapController.setCenter(startPoint);
 
+        BoundingBox oBB = new BoundingBox(startPoint.getLatitude() + 0.25, startPoint.getLongitude() + 0.25,
+                startPoint.getLatitude() - 0.25, startPoint.getLongitude() - 0.25);
+
+
 
         //Using Nominatim
         NominatimPOIProvider poiProvider = new NominatimPOIProvider("OsmNavigator/1.0");
         ArrayList<POI> pois = poiProvider.getPOICloseTo(startPoint, get, 150, 0.1);
         //or : ArrayList<POI> pois = poiProvider.getPOIAlong(road.getRouteLow(), "fuel", 50, 2.0);
+
+       // ArrayList<POI> pois = poiProvider.getPOIInside(oBB, get, 100);
 
 
         //FolderOverlay poiMarkers = new FolderOverlay(this);
@@ -165,7 +171,7 @@ public class MainActivitys extends BaseActivity implements MapEventsReceiver, Ma
             }
         }
 
-       /* //12. Loading KML content
+       /* //Loading KML content
         mKmlDocument = new KmlDocument();
         //Get OpenStreetMap content as KML with Overpass API:
         OverpassAPIProvider overpassProvider = new OverpassAPIProvider();
@@ -175,7 +181,7 @@ public class MainActivitys extends BaseActivity implements MapEventsReceiver, Ma
         boolean ok = overpassProvider.addInKmlFolder(mKmlDocument.mKmlRoot, oUrl);
 
         if (ok) {
-            //13.1 Simple styling
+            //Simple styling
             Drawable defaultMarker = ResourcesCompat.getDrawable(getResources(), R.drawable.marker_kml_point, null);
             Bitmap defaultBitmap = ((BitmapDrawable) defaultMarker).getBitmap();
             Style defaultStyle = new Style(defaultBitmap, 0x901010AA, 3.0f, 0x20AA1010);
@@ -193,7 +199,7 @@ public class MainActivitys extends BaseActivity implements MapEventsReceiver, Ma
         } else
             Toast.makeText(this, "Error when loading KML", Toast.LENGTH_SHORT).show();
 
-        //14. Grab overlays in KML structure, save KML document locally
+        //Grab overlays in KML structure, save KML document locally
         if (mKmlDocument.mKmlRoot != null) {
             KmlFolder root = mKmlDocument.mKmlRoot;
             mKmlDocument.saveAsKML(mKmlDocument.getDefaultPathForAndroid("my_route.kml"));
