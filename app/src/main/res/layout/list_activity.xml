@@ -29,7 +29,7 @@
         android:id="@+id/desc"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/title"
+        android:layout_below="@id/title_list"
         android:layout_marginLeft="10dp"
         android:layout_toRightOf="@id/id"
         android:ellipsize="end"

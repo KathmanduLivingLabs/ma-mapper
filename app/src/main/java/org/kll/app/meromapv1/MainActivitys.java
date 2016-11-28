@@ -100,7 +100,7 @@ public class MainActivitys extends BaseActivity implements MapEventsReceiver, Ma
         GeoPoint startPoint = new GeoPoint(27.7360100,
                 85.3355140);
         IMapController mapController = map.getController();
-        mapController.setZoom(12);
+        mapController.setZoom(15);
         mapController.setCenter(startPoint);
 
 

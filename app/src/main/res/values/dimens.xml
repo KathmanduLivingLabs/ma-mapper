@@ -13,8 +13,8 @@
     <dimen name="text_size">15sp</dimen>
     <dimen name="header_bottom_margin">30dp</dimen>
     <dimen name="view_padding">10dp</dimen>
-    <dimen name="add_edit_textsize">18dp</dimen>
-    <dimen name="button_width">170dp</dimen>
+    <dimen name="add_edit_textsize">12dp</dimen>
+    <dimen name="button_width">300dp</dimen>
     <dimen name="button_padding">20dp</dimen>
     <dimen name="button_height">50dp</dimen>
 

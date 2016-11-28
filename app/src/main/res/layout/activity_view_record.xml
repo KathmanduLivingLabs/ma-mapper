@@ -68,25 +68,19 @@
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:padding="@dimen/view_padding">
+        android:padding="@dimen/view_padding"
+        android:weightSum="1">
 
         <Button
-            android:id="@+id/info_ok"
+            android:id="@+id/edit_query"
             android:layout_width="@dimen/button_width"
             android:layout_height="@dimen/button_height"
             android:layout_marginTop="@dimen/button_padding"
-            android:text="@string/add_info" />
-
-        <Button
-            android:id="@+id/info_edit"
-            android:layout_width="@dimen/button_width"
-            android:layout_height="@dimen/button_height"
-            android:layout_marginTop="@dimen/button_padding"
-            android:text="@string/edit_info" />
+            android:text="@string/add_info"
+            android:layout_gravity="center"
+            android:layout_weight="6.78" />
 
     </LinearLayout>
-
-
 
 
 </LinearLayout>

@@ -1,5 +1,6 @@
 package org.kll.app.meromapv1.Manipulation;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -15,7 +16,7 @@ import org.kll.app.meromapv1.R;
  * Project for Kathmandu Living Labs
  */
 
-public class DetailInfo extends BaseActivity{
+public class DetailInfo extends Activity{
 
      String getName;
      String getDisc;
@@ -42,7 +43,7 @@ public class DetailInfo extends BaseActivity{
         final TextView textDisctoChange = (TextView) findViewById(R.id.text_infodisc);
         textNametoChange.setText(getName);
         textDisctoChange.setText(getDisc);
-        ok = (Button) findViewById(R.id.info_ok);
+        ok = (Button) findViewById(R.id.edit_query);
 
         dbManager = new DBManager(this);
         dbManager.open();
