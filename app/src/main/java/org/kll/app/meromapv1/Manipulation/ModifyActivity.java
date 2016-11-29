@@ -41,7 +41,7 @@ public class ModifyActivity extends Activity implements View.OnClickListener{
 
         titleText = (EditText) findViewById(R.id.subject_edittext);
         descText = (EditText) findViewById(R.id.description_edittext);
-        contText = (EditText) findViewById(R.id.description_editcontact);
+        contText = (EditText) findViewById(R.id.contact_edittext);
 
         updateBtn = (Button) findViewById(R.id.btn_update);
         deleteBtn = (Button) findViewById(R.id.btn_delete);

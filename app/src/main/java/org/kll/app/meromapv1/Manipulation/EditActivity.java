@@ -9,7 +9,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
+
 
 import org.kll.app.meromapv1.Database.DBManager;
 import org.kll.app.meromapv1.R;
@@ -44,7 +44,7 @@ public class EditActivity extends Activity implements View.OnClickListener {
 
         subjectEditText = (EditText) findViewById(R.id.subject_edittext);
         descEditText = (EditText) findViewById(R.id.description_edittext);
-        contactEditText = (EditText) findViewById(R.id.description_editcontact);
+        contactEditText = (EditText) findViewById(R.id.contact_edittext);
 
         subjectEditText.setText(getName);
         descEditText.setText(getDisc);
@@ -67,7 +67,7 @@ public class EditActivity extends Activity implements View.OnClickListener {
 
                 dbManager.insert(name, desc, cont);
 
-                Intent main = new Intent(EditActivity.this, ListActivity.class)
+               Intent main = new Intent(EditActivity.this, ListActivity.class)
                         .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
                 startActivity(main);

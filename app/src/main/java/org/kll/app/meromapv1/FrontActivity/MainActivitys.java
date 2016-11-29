@@ -115,20 +115,20 @@ public class MainActivitys extends BaseActivity implements MapEventsReceiver, Ma
         //GeoPoint startPoint = new GeoPoint(27.7360100,
         //        85.3355140);
         IMapController mapController = map.getController();
-        mapController.setZoom(20);
+        mapController.setZoom(16);
         mapController.setCenter(startPoint);
 
-        BoundingBox oBB = new BoundingBox(startPoint.getLatitude() + 0.25, startPoint.getLongitude() + 0.25,
-                startPoint.getLatitude() - 0.25, startPoint.getLongitude() - 0.25);
+        BoundingBox oBB = new BoundingBox(startPoint.getLatitude() + 0.0055, startPoint.getLongitude() + 0.0055,
+                startPoint.getLatitude() - 0.0055, startPoint.getLongitude() - 0.0055);
 
 
 
         //Using Nominatim
         NominatimPOIProvider poiProvider = new NominatimPOIProvider("OsmNavigator/1.0");
-        ArrayList<POI> pois = poiProvider.getPOICloseTo(startPoint, get, 150, 0.1);
+        //ArrayList<POI> pois = poiProvider.getPOICloseTo(startPoint, get, 150, 0.1);
         //or : ArrayList<POI> pois = poiProvider.getPOIAlong(road.getRouteLow(), "fuel", 50, 2.0);
 
-       // ArrayList<POI> pois = poiProvider.getPOIInside(oBB, get, 100);
+        ArrayList<POI> pois = poiProvider.getPOIInside(oBB, get, 100);
 
 
         //FolderOverlay poiMarkers = new FolderOverlay(this);

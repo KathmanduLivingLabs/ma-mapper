@@ -20,7 +20,17 @@
         android:ems="10"
         android:hint="@string/enter_desc"
         android:inputType="textMultiLine"
-        android:minLines="5" >
+        android:minLines="4" />
+
+
+    <EditText
+        android:id="@+id/contact_edittext"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="@string/enter_contact"
+        android:inputType="textMultiLine"
+        android:minLines="4" >
     </EditText>
 
 

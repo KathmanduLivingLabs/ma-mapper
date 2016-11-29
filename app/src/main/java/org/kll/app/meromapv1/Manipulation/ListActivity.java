@@ -32,9 +32,9 @@ public class ListActivity extends BaseActivity{
     private android.support.v4.widget.SimpleCursorAdapter adapter;
 
     final String[] from = new String[] { DatabaseHelper._ID,
-            DatabaseHelper.NAME, DatabaseHelper.DESC , DatabaseHelper.CONTACT};
+            DatabaseHelper.NAME, DatabaseHelper.DESC, DatabaseHelper.CONTACT};
 
-    final int[] to = new int[] { R.id.id, R.id.title, R.id.desc, R.id.contact};
+    final int[] to = new int[] { R.id.id, R.id.title, R.id.desc, R.id.conta};
 
 
     @Override
@@ -68,7 +68,7 @@ public class ListActivity extends BaseActivity{
                 TextView idTextView = (TextView) view.findViewById(R.id.id);
                 TextView titleTextView = (TextView) view.findViewById(R.id.title);
                 TextView descTextView = (TextView) view.findViewById(R.id.desc);
-                TextView contTextView = (TextView) view.findViewById(R.id.contact);
+                TextView contTextView = (TextView) view.findViewById(R.id.conta);
 
                 String id = idTextView.getText().toString();
                 String title = titleTextView.getText().toString();
@@ -76,10 +76,10 @@ public class ListActivity extends BaseActivity{
                 String cont = contTextView.getText().toString();
 
                 Intent modify_intent = new Intent(getApplicationContext(), ModifyActivity.class);
+                modify_intent.putExtra("id", id);
                 modify_intent.putExtra("name", title);
                 modify_intent.putExtra("desc", desc);
                 modify_intent.putExtra("cont", cont);
-                modify_intent.putExtra("id", id);
 
                 startActivity(modify_intent);
             }

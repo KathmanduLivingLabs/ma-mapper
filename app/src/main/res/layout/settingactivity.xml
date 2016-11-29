@@ -32,7 +32,8 @@
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="107dp"
-            android:id="@+id/school" />
+            android:id="@+id/school"
+            android:checked="true"/>
         <RadioButton
             android:text="Bank"
             android:layout_width="wrap_content"
@@ -41,7 +42,7 @@
             android:layout_below="@+id/school"
             android:layout_alignLeft="@+id/school"
             android:layout_alignStart="@+id/school"
-            android:checked="true"/>
+            />
 
         <Button
             android:text="Select"

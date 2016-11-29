@@ -15,7 +15,7 @@
 
     <string name="add_info">Add Info</string>
 
-    <string name="empty_list_text">list</string>
+    <string name="empty_list_text">Edit/Modify/Upload List</string>
     <string name="add_record">add</string>
     <string name="poi">Point of Interest</string>
     <string name="poi_edit">Edit POI</string>

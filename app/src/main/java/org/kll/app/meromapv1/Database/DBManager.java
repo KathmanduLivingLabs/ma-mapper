@@ -42,9 +42,17 @@ public class DBManager {
     }
 
     public Cursor fetch() {
-        String[] columns = new String[] { DatabaseHelper._ID, DatabaseHelper.NAME, DatabaseHelper.DESC
-        , DatabaseHelper.CONTACT};
-       Cursor cursor = database.query(DatabaseHelper.TABLE_NAME, columns, null, null, null, null, null);
+        String[] columns = new String[] {
+                DatabaseHelper._ID,
+                DatabaseHelper.NAME,
+                DatabaseHelper.DESC,
+                DatabaseHelper.CONTACT
+        };
+
+                //, DatabaseHelper.CONTACT};
+       Cursor cursor = database.query(
+               DatabaseHelper.TABLE_NAME,
+               columns, null, null, null, null, null);
 
         if (cursor != null) {
             cursor.moveToFirst();
@@ -57,7 +65,9 @@ public class DBManager {
         contentValues.put(DatabaseHelper.NAME, name);
         contentValues.put(DatabaseHelper.DESC, desc);
         contentValues.put(DatabaseHelper.CONTACT, contact);
-        int i = database.update(DatabaseHelper.TABLE_NAME, contentValues, DatabaseHelper._ID + " = " + _id, null);
+
+        int i = database.update(DatabaseHelper.TABLE_NAME, contentValues,
+                DatabaseHelper._ID + " = " + _id, null);
         return i;
     }
 

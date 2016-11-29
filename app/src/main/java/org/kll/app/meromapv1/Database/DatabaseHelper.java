@@ -26,9 +26,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     static final int DB_VERSION = 1;
 
     // Creating table query
-    private static final String CREATE_TABLE = "create table " + TABLE_NAME + "(" + _ID
+    private static final String CREATE_TABLE =
+            "create table " + TABLE_NAME + "(" + _ID
             + " INTEGER PRIMARY KEY AUTOINCREMENT, " + NAME + " TEXT NOT NULL, "
-            + DESC + " TEXT, " + CONTACT +" TEXT);";
+            + DESC + " TEXT, " + CONTACT +" TEXT"+ " )";
+
+
+
+    //+ CONTACT +" TEXT_TYPE
 
     public DatabaseHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
