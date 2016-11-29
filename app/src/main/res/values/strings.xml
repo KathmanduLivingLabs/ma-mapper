@@ -15,7 +15,7 @@
 
     <string name="add_info">Add Info</string>
 
-    <string name="empty_list_text">list</string>
+    <string name="empty_list_text">Edit/Modify/Upload List</string>
     <string name="add_record">add</string>
     <string name="poi">Point of Interest</string>
     <string name="poi_edit">Edit POI</string>
@@ -23,4 +23,5 @@
     <string name="enter_desc">Description</string>
     <string name="btn_update">Update</string>
     <string name="btn_delete">Delete</string>
+    <string name="enter_contact">Phone Number</string>
 </resources>

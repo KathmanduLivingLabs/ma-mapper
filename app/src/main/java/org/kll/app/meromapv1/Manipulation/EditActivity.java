@@ -9,10 +9,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
+
 
 import org.kll.app.meromapv1.Database.DBManager;
-import org.kll.app.meromapv1.FrontActivity.MainActivitys;
 import org.kll.app.meromapv1.R;
 
 
@@ -22,6 +21,7 @@ public class EditActivity extends Activity implements View.OnClickListener {
     private Button addTodoBtn;
     private EditText subjectEditText;
     private EditText descEditText;
+    private EditText contactEditText;
 
     private DBManager dbManager;
 
@@ -41,8 +41,11 @@ public class EditActivity extends Activity implements View.OnClickListener {
 
 
 
+
         subjectEditText = (EditText) findViewById(R.id.subject_edittext);
-       descEditText = (EditText) findViewById(R.id.description_edittext);
+        descEditText = (EditText) findViewById(R.id.description_edittext);
+        contactEditText = (EditText) findViewById(R.id.contact_edittext);
+
         subjectEditText.setText(getName);
         descEditText.setText(getDisc);
 
@@ -60,10 +63,11 @@ public class EditActivity extends Activity implements View.OnClickListener {
 
                 final String name = subjectEditText.getText().toString();
                 final String desc = descEditText.getText().toString();
+                final String cont = contactEditText.getText().toString();
 
-                dbManager.insert(name, desc);
+                dbManager.insert(name, desc, cont);
 
-                Intent main = new Intent(EditActivity.this, ListActivity.class)
+               Intent main = new Intent(EditActivity.this, ListActivity.class)
                         .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
                 startActivity(main);
@@ -71,10 +75,4 @@ public class EditActivity extends Activity implements View.OnClickListener {
         }
     }
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        startActivity(new Intent(EditActivity.this, MainActivitys.class));
-        finish();
-    }
 }
