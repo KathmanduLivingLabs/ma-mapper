@@ -1,5 +1,5 @@
 
-package org.kll.app.meromapv1.Manipulation;
+package org.kll.app.mamapper.Manipulation;
 
 
 import android.content.Intent;
@@ -11,9 +11,9 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
-import org.kll.app.meromapv1.FrontActivity.BaseActivity;
-import org.kll.app.meromapv1.FrontActivity.MainActivitys;
-import org.kll.app.meromapv1.R;
+import org.kll.app.mamapper.FrontActivity.BaseActivity;
+import org.kll.app.mamapper.FrontActivity.MainActivitys;
+import org.kll.app.mamapper.R;
 
 
 public class SettingsActivity extends BaseActivity {

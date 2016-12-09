@@ -1,4 +1,4 @@
-package org.kll.app.meromapv1.Model;
+package org.kll.app.mamapper.Model;
 
 
 

@@ -1,4 +1,4 @@
-package org.kll.app.meromapv1.Manipulation;
+package org.kll.app.mamapper.Manipulation;
 
 
 
@@ -11,8 +11,8 @@ import android.widget.Button;
 import android.widget.EditText;
 
 
-import org.kll.app.meromapv1.Database.DBManager;
-import org.kll.app.meromapv1.R;
+import org.kll.app.mamapper.Database.DBManager;
+import org.kll.app.mamapper.R;
 
 
 

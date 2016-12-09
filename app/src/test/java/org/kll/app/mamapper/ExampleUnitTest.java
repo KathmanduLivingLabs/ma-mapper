@@ -1,4 +1,4 @@
-package org.kll.app.meromapv1;
+package org.kll.app.mamapper;
 
 import org.junit.Test;
 

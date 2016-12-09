@@ -1,9 +1,8 @@
-package org.kll.app.meromapv1.Manipulation;
+package org.kll.app.mamapper.Manipulation;
 
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -12,11 +11,10 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import org.kll.app.meromapv1.Database.DBManager;
-import org.kll.app.meromapv1.Database.DatabaseHelper;
-import org.kll.app.meromapv1.FrontActivity.BaseActivity;
-import org.kll.app.meromapv1.R;
-import org.w3c.dom.Text;
+import org.kll.app.mamapper.Database.DBManager;
+import org.kll.app.mamapper.Database.DatabaseHelper;
+import org.kll.app.mamapper.FrontActivity.BaseActivity;
+import org.kll.app.mamapper.R;
 
 /**
  * Created by Rahul Singh Maharjan on 11/27/16.

@@ -1,4 +1,4 @@
-package org.kll.app.meromapv1.FrontActivity;
+package org.kll.app.mamapper.FrontActivity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -13,9 +13,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 
-import org.kll.app.meromapv1.Manipulation.ListActivity;
-import org.kll.app.meromapv1.Manipulation.SettingsActivity;
-import org.kll.app.meromapv1.R;
+import org.kll.app.mamapper.Manipulation.ListActivity;
+import org.kll.app.mamapper.Manipulation.SettingsActivity;
+import org.kll.app.mamapper.R;
 
 public class BaseActivity extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener {

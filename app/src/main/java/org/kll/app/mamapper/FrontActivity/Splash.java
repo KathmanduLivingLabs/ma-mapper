@@ -1,10 +1,10 @@
-package org.kll.app.meromapv1.FrontActivity;
+package org.kll.app.mamapper.FrontActivity;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
-import org.kll.app.meromapv1.R;
+import org.kll.app.mamapper.R;
 
 import java.util.Timer;
 import java.util.TimerTask;

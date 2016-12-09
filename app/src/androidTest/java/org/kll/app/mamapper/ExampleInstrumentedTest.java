@@ -1,4 +1,4 @@
-package org.kll.app.meromapv1;
+package org.kll.app.mamapper;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("org.kll.app.meromapv1", appContext.getPackageName());
+        assertEquals("org.kll.app.mamapper", appContext.getPackageName());
     }
 }

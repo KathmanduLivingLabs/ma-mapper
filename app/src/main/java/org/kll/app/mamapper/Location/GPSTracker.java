@@ -1,4 +1,4 @@
-package org.kll.app.meromapv1.Location;
+package org.kll.app.mamapper.Location;
 
 /**
  * Created by Rahul Singh Maharjan on 11/28/16.

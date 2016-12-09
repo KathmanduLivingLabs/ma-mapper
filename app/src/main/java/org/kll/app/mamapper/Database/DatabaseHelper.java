@@ -1,4 +1,4 @@
-package org.kll.app.meromapv1.Database;
+package org.kll.app.mamapper.Database;
 
 /**
  * Created by Rahul Singh Maharjan on 11/27/16.

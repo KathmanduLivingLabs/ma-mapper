@@ -1,4 +1,4 @@
-package org.kll.app.meromapv1.FrontActivity;
+package org.kll.app.mamapper.FrontActivity;
 
 /**
  * Created by Rahul Singh Maharjan on 10/24/16.
@@ -41,7 +41,7 @@ import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
 
 //for geocoding
-import org.kll.app.meromapv1.R;
+import org.kll.app.mamapper.R;
 
 import de.westnordost.osmapi.OsmConnection;
 import de.westnordost.osmapi.map.MapDataDao;
