@@ -21,4 +21,7 @@
         <item name="actionMenuTextColor">@android:color/white</item>
         <item name="colorControlNormal">@android:color/white</item>
     </style>
+    <style name="dialog" parent="Theme.AppCompat.Dialog">
+        <item name="android:windowNoTitle">true</item>
+    </style>
 </resources>
