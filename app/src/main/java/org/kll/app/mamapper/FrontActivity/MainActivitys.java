@@ -7,6 +7,8 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.StrictMode;
@@ -17,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 
+import org.kll.app.mamapper.DialogsInterface.NetworkSettingDialog;
 import org.kll.app.mamapper.Location.GPSTracker;
 import org.kll.app.mamapper.R;
 import org.osmdroid.api.IMapController;
@@ -68,23 +71,22 @@ public class MainActivitys extends BaseActivity implements MapEventsReceiver, Ma
     double longitude;
 
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
 
-
-    @Override protected void onCreate(Bundle savedInstanceState) {
-
-        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
         //create a instance of SQLite database
 
         gps = new GPSTracker(MainActivitys.this);
 
-        if(gps.canGetLocation()){
+        if (gps.canGetLocation()) {
 
             latitude = gps.getLatitude();
             longitude = gps.getLongitude();
             //Toast.makeText(getApplicationContext(), "Your Location is - \nLat: " + latitude + "\nLong: " + longitude, Toast.LENGTH_LONG).show();
-        }else{
+        } else {
             // can't get location
             // GPS or Network is not enabled
             // Ask user to enable GPS/network in settings
@@ -92,15 +94,10 @@ public class MainActivitys extends BaseActivity implements MapEventsReceiver, Ma
         }
 
 
-
-
         String get = getIntent().getStringExtra("send");
-        if(get == "school")
-        {
+        if (get == "school") {
             select = "school";
-        }
-        else if(get == "bank")
-        {
+        } else if (get == "bank") {
             select = "bank";
         }
 
@@ -108,6 +105,9 @@ public class MainActivitys extends BaseActivity implements MapEventsReceiver, Ma
         //defining maps and geolocation
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        if (!isNetworkAvailable()){
+            showNetworkSettingAlert();
+        }
         map = (MapView) findViewById(R.id.map);
         map.setBuiltInZoomControls(true);
         map.setMultiTouchControls(true);
@@ -120,7 +120,6 @@ public class MainActivitys extends BaseActivity implements MapEventsReceiver, Ma
 
         BoundingBox oBB = new BoundingBox(startPoint.getLatitude() + 0.0055, startPoint.getLongitude() + 0.0055,
                 startPoint.getLatitude() - 0.0055, startPoint.getLongitude() - 0.0055);
-
 
 
         //Using Nominatim
@@ -153,7 +152,6 @@ public class MainActivitys extends BaseActivity implements MapEventsReceiver, Ma
                 poiMarker.setSnippet(poi.mDescription);
                 poiMarker.setPosition(poi.mLocation);
                 poiMarker.setPosition(poi.mLocation);
-
 
 
                 poiMarker.setIcon(poiIcon);
@@ -211,6 +209,18 @@ public class MainActivitys extends BaseActivity implements MapEventsReceiver, Ma
         // Handling Map events
         MapEventsOverlay mapEventsOverlay = new MapEventsOverlay(this);
         map.getOverlays().add(0, mapEventsOverlay); //inserted at the "bottom" of all overlays
+    }
+
+    private void showNetworkSettingAlert() {
+        Intent intent = new Intent(getApplicationContext(),NetworkSettingDialog.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        getApplicationContext().startActivity(intent);
+    }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
     //--- Stuff for setting the mapview on a box at startup:
