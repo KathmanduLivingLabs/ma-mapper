@@ -28,17 +28,17 @@ public class Splash extends Activity {
         new Timer().schedule(new TimerTask() {
             @Override
             public void run() {
-                Splash.this.runOnUiThread(new Runnable(){
-                    public void run()
-                    {
+                Splash.this.runOnUiThread(new Runnable() {
+                    public void run() {
 
                         Intent next = new Intent(Splash.this, MainActivitys.class);
-                       next.putExtra("send", "school");
+                        next.putExtra("send", "school");
                         startActivity(next);
+                        finish();
                     }
                 });
             }
-        },50);
+        },500);
     }
 
 
