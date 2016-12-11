@@ -36,6 +36,9 @@
         <activity android:name="org.kll.app.mamapper.FrontActivity.BaseActivity"
             android:label="@string/title_activity_base"
             android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name="org.kll.app.mamapper.DialogsInterface.NetworkSettingDialog"
+            android:label=""
+            android:theme="@style/Theme.AppCompat.Dialog"/>
 
         <activity android:name="org.kll.app.mamapper.Manipulation.DetailInfo"
             android:label="@string/poi"
