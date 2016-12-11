@@ -105,7 +105,9 @@ public class MainActivitys extends BaseActivity implements MapEventsReceiver, Ma
         //defining maps and geolocation
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        if (isNetworkAvailable()){
+        if (!isNetworkAvailable()){
+            showNetworkSettingAlert();
+        }
         map = (MapView) findViewById(R.id.map);
         map.setBuiltInZoomControls(true);
         map.setMultiTouchControls(true);
@@ -207,9 +209,6 @@ public class MainActivitys extends BaseActivity implements MapEventsReceiver, Ma
         // Handling Map events
         MapEventsOverlay mapEventsOverlay = new MapEventsOverlay(this);
         map.getOverlays().add(0, mapEventsOverlay); //inserted at the "bottom" of all overlays
-    }else {
-            showNetworkSettingAlert();
-        }
     }
 
     private void showNetworkSettingAlert() {
