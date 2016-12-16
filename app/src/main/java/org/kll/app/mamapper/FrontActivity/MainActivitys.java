@@ -392,8 +392,8 @@ public class MainActivitys extends BaseActivity implements MapEventsReceiver, Ma
     //Handling Map events
     @Override
     public boolean singleTapConfirmedHelper(GeoPoint p) {
-        Toast.makeText(this, "Tap on (" + p.getLatitude() + "," + p.getLongitude() + ")", Toast.LENGTH_SHORT).show();
-        InfoWindow.closeAllInfoWindowsOn(map);
+        //Toast.makeText(this, "Tap on (" + p.getLatitude() + "," + p.getLongitude() + ")", Toast.LENGTH_SHORT).show();
+        //InfoWindow.closeAllInfoWindowsOn(map);
         return true;
     }
 
@@ -402,7 +402,7 @@ public class MainActivitys extends BaseActivity implements MapEventsReceiver, Ma
     @Override public boolean longPressHelper(GeoPoint p) {
 
         // Using Polygon, defined as a circle:
-        Polygon circle = new Polygon();
+       /* Polygon circle = new Polygon();
         circle.setPoints(Polygon.pointsAsCircle(p, 2000.0));
         circle.setFillColor(0x12121212);
         circle.setStrokeColor(Color.RED);
@@ -421,6 +421,7 @@ public class MainActivitys extends BaseActivity implements MapEventsReceiver, Ma
         myGroundOverlay.setBearing(mGroundOverlayBearing);
         mGroundOverlayBearing += 20.0f;
         map.getOverlays().add(myGroundOverlay);
+        */
 
         map.invalidate();
         return true;
