@@ -3,6 +3,12 @@ package org.kll.app.mamapper.FrontActivity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.view.Window;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import org.kll.app.mamapper.R;
 
@@ -20,46 +26,43 @@ public class Splash extends Activity {
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.splash);
-
-
-
-
-        new Timer().schedule(new TimerTask() {
-            @Override
-            public void run() {
-                Splash.this.runOnUiThread(new Runnable() {
-                    public void run() {
-
-                        Intent next = new Intent(Splash.this, MainActivitys.class);
-                        next.putExtra("send", "school");
-                        startActivity(next);
-                        finish();
-                    }
-                });
-            }
-        },500);
+        startSplashScreen();
     }
 
 
+    private void startSplashScreen() {
 
-   /* public void addListenerOnButton()
-    {
+        // create a thread that counts up to the timeout
+        Thread t = new Thread() {
+            int count = 0;
 
-        final Context context = this;
-
-        text = (TextView) findViewById(R.id.skip);
-
-        text.setOnClickListener(new View.OnClickListener()
-        {
 
             @Override
-            public void onClick(View v) {
-
-                Intent intent = new Intent(Splash.this, MapActivity.class);
-                startActivity(intent);
-
+            public void run() {
+                try {
+                    super.run();
+                    while (count < 2000) {
+                        sleep(100);
+                        count += 100;
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                } finally {
+                    endSplashScreen();
+                }
             }
-        });
-    }*/
+        };
+        t.start();
+    }
+
+    private void endSplashScreen() {
+
+        Intent next = new Intent(Splash.this, MainActivitys.class);
+        next.putExtra("send", "school");
+        startActivity(next);
+        finish();
+    }
+
 }
