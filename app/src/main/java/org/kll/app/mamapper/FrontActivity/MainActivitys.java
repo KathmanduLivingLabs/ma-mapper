@@ -1,6 +1,8 @@
 package org.kll.app.mamapper.FrontActivity;
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -10,8 +12,11 @@ import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.support.annotation.RequiresApi;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.res.ResourcesCompat;
 import android.view.View;
 import android.widget.Button;
@@ -52,6 +57,9 @@ import org.osmdroid.views.overlay.infowindow.MarkerInfoWindow;
 
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class MainActivitys extends BaseActivity implements MapEventsReceiver, MapView.OnFirstLayoutListener {
 
@@ -74,15 +82,17 @@ public class MainActivitys extends BaseActivity implements MapEventsReceiver, Ma
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
-        //create a instance of SQLite database
+        // Request permissions to support Android Marshmallow and above devices
+        if (Build.VERSION.SDK_INT >= 23) {
+            checkPermissions();
+        }
 
         gps = new GPSTracker(MainActivitys.this);
 
         if (gps.canGetLocation()) {
-
             latitude = gps.getLatitude();
             longitude = gps.getLongitude();
             //Toast.makeText(getApplicationContext(), "Your Location is - \nLat: " + latitude + "\nLong: " + longitude, Toast.LENGTH_LONG).show();
@@ -92,6 +102,8 @@ public class MainActivitys extends BaseActivity implements MapEventsReceiver, Ma
             // Ask user to enable GPS/network in settings
             gps.showSettingsAlert();
         }
+
+
 
 
         String get = getIntent().getStringExtra("send");
@@ -111,9 +123,8 @@ public class MainActivitys extends BaseActivity implements MapEventsReceiver, Ma
         map = (MapView) findViewById(R.id.map);
         map.setBuiltInZoomControls(true);
         map.setMultiTouchControls(true);
-        GeoPoint startPoint = new GeoPoint(longitude, latitude);
-        //GeoPoint startPoint = new GeoPoint(27.7360100,
-        //        85.3355140);
+        //GeoPoint startPoint = new GeoPoint(longitude, latitude);
+        GeoPoint startPoint = new GeoPoint(27.7360100, 85.3355140);
         IMapController mapController = map.getController();
         mapController.setZoom(16);
         mapController.setCenter(startPoint);
@@ -124,9 +135,6 @@ public class MainActivitys extends BaseActivity implements MapEventsReceiver, Ma
 
         //Using Nominatim
         NominatimPOIProvider poiProvider = new NominatimPOIProvider("OsmNavigator/1.0");
-        //ArrayList<POI> pois = poiProvider.getPOICloseTo(startPoint, get, 150, 0.1);
-        //or : ArrayList<POI> pois = poiProvider.getPOIAlong(road.getRouteLow(), "fuel", 50, 2.0);
-
         ArrayList<POI> pois = poiProvider.getPOIInside(oBB, get, 100);
 
 
@@ -153,59 +161,18 @@ public class MainActivitys extends BaseActivity implements MapEventsReceiver, Ma
                 poiMarker.setPosition(poi.mLocation);
                 poiMarker.setPosition(poi.mLocation);
 
-
                 poiMarker.setIcon(poiIcon);
                 if (poi.mThumbnail != null) {
                     poiMarker.setImage(new BitmapDrawable(getResources(), poi.mThumbnail));
 
                 }
 
-
                 System.out.println(poi.mDescription);
-
                 poiMarker.setInfoWindow(new CustomInfoWindow(map));
                 poiMarker.setRelatedObject(poi);
                 poiMarkers.add(poiMarker);
             }
         }
-
-       /* //Loading KML content
-        mKmlDocument = new KmlDocument();
-        //Get OpenStreetMap content as KML with Overpass API:
-        OverpassAPIProvider overpassProvider = new OverpassAPIProvider();
-        BoundingBox oBB = new BoundingBox(startPoint.getLatitude() + 0.25, startPoint.getLongitude() + 0.25,
-                startPoint.getLatitude() - 0.25, startPoint.getLongitude() - 0.25);
-        String oUrl = overpassProvider.urlForTagSearchKml("highway=speed_camera", oBB, 500, 30);
-        boolean ok = overpassProvider.addInKmlFolder(mKmlDocument.mKmlRoot, oUrl);
-
-        if (ok) {
-            //Simple styling
-            Drawable defaultMarker = ResourcesCompat.getDrawable(getResources(), R.drawable.marker_kml_point, null);
-            Bitmap defaultBitmap = ((BitmapDrawable) defaultMarker).getBitmap();
-            Style defaultStyle = new Style(defaultBitmap, 0x901010AA, 3.0f, 0x20AA1010);
-            //13.2 Advanced styling with Styler
-            KmlFeature.Styler styler = new MyKmlStyler(defaultStyle);
-
-            FolderOverlay kmlOverlay = (FolderOverlay) mKmlDocument.mKmlRoot.buildOverlay(map, defaultStyle, styler, mKmlDocument);
-            map.getOverlays().add(kmlOverlay);
-            BoundingBox bb = mKmlDocument.mKmlRoot.getBoundingBox();
-            if (bb != null) {
-                //map.zoomToBoundingBox(bb, false); //=> not working in onCreate - this is a well-known osmdroid issue.
-                //Workaround:
-                setInitialViewOn(bb);
-            }
-        } else
-            Toast.makeText(this, "Error when loading KML", Toast.LENGTH_SHORT).show();
-
-        //Grab overlays in KML structure, save KML document locally
-        if (mKmlDocument.mKmlRoot != null) {
-            KmlFolder root = mKmlDocument.mKmlRoot;
-            mKmlDocument.saveAsKML(mKmlDocument.getDefaultPathForAndroid("my_route.kml"));
-            //15. Loading and saving of GeoJSON content
-            mKmlDocument.saveAsGeoJSON(mKmlDocument.getDefaultPathForAndroid("my_route.json"));
-        }
-*/
-
         // Handling Map events
         MapEventsOverlay mapEventsOverlay = new MapEventsOverlay(this);
         map.getOverlays().add(0, mapEventsOverlay); //inserted at the "bottom" of all overlays
@@ -400,34 +367,66 @@ public class MainActivitys extends BaseActivity implements MapEventsReceiver, Ma
     float mGroundOverlayBearing = 0.0f;
 
     @Override public boolean longPressHelper(GeoPoint p) {
-
-        // Using Polygon, defined as a circle:
-       /* Polygon circle = new Polygon();
-        circle.setPoints(Polygon.pointsAsCircle(p, 2000.0));
-        circle.setFillColor(0x12121212);
-        circle.setStrokeColor(Color.RED);
-        circle.setStrokeWidth(2);
-        map.getOverlays().add(circle);
-        circle.setInfoWindow(new BasicInfoWindow(org.osmdroid.bonuspack.R.layout.bonuspack_bubble, map));
-        circle.setTitle("Centered on " + p.getLatitude() + "," + p.getLongitude());
-
-        //18. Using GroundOverlay
-        GroundOverlay myGroundOverlay = new GroundOverlay();
-        myGroundOverlay.setPosition(p);
-        Drawable d = ResourcesCompat.getDrawable(getResources(), R.drawable.ic_launcher, null);
-        myGroundOverlay.setImage(d.mutate());
-        myGroundOverlay.setDimensions(2000.0f);
-        //myGroundOverlay.setTransparency(0.25f);
-        myGroundOverlay.setBearing(mGroundOverlayBearing);
-        mGroundOverlayBearing += 20.0f;
-        map.getOverlays().add(myGroundOverlay);
-        */
-
         map.invalidate();
         return true;
-
     }
 
+    // START PERMISSION CHECK
+    final private int REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS = 124;
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    private void checkPermissions() {
+        List<String> permissions = new ArrayList<>();
+        String message = "osmdroid permissions:";
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            permissions.add(Manifest.permission.ACCESS_FINE_LOCATION);
+            message += "\nLocation to show user location.";
+        }
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            permissions.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+            message += "\nStorage access to store map tiles.";
+        }
+        if (!permissions.isEmpty()) {
+            Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+            String[] params = permissions.toArray(new String[permissions.size()]);
+            requestPermissions(params, REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS);
+        } // else: We already have permissions, so handle as normal
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        switch (requestCode) {
+            case REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS: {
+                Map<String, Integer> perms = new HashMap<>();
+                // Initial
+                perms.put(Manifest.permission.ACCESS_FINE_LOCATION, PackageManager.PERMISSION_GRANTED);
+                perms.put(Manifest.permission.WRITE_EXTERNAL_STORAGE, PackageManager.PERMISSION_GRANTED);
+                // Fill with results
+                for (int i = 0; i < permissions.length; i++)
+                    perms.put(permissions[i], grantResults[i]);
+                // Check for ACCESS_FINE_LOCATION and WRITE_EXTERNAL_STORAGE
+                Boolean location = perms.get(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
+                Boolean storage = perms.get(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
+                if (location && storage) {
+                    // All Permissions Granted
+                    Toast.makeText(MainActivitys.this, "All permissions granted", Toast.LENGTH_SHORT).show();
+                } else if (location) {
+                    Toast.makeText(this, "Storage permission is required to store map tiles to reduce data usage and for offline usage.", Toast.LENGTH_LONG).show();
+                } else if (storage) {
+                    Toast.makeText(this, "Location permission is required to show the user's location on map.", Toast.LENGTH_LONG).show();
+                } else { // !location && !storage case
+                    // Permission Denied
+                    Toast.makeText(MainActivitys.this, "Storage permission is required to store map tiles to reduce data usage and for offline usage." +
+                            "\nLocation permission is required to show the user's location on map.", Toast.LENGTH_SHORT).show();
+                }
+            }
+            break;
+            default:
+                super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
+    }
+
+    // END PERMISSION CHECK
 
 
 }
