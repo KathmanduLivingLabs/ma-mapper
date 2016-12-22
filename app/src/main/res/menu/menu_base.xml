@@ -1,17 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item
-        android:id="@+id/action_main"
-        android:icon="@android:drawable/ic_btn_speak_now"
-        android:title="Back"/>
 
-/>
     <item
         android:id="@+id/list_edit_upload_delete"
         android:icon="@drawable/ic_mode_edit_black_24dp"
         android:title="List/Edit/Upload"/>
     <item
-        android:id="@+id/select_tags"
-        android:icon="@drawable/ic_settings_black_24dp"
-        android:title="Select Tag"/>
+        android:id="@+id/select_hospital"
+        android:icon="@drawable/person"
+        android:title="Hospital"/>
+
+    <item
+        android:id="@+id/select_school"
+        android:icon="@drawable/person"
+        android:title="School"/>
+
+    <item
+        android:id="@+id/select_bank"
+        android:icon="@drawable/person"
+        android:title="Bank"/>
+
+
 </menu>

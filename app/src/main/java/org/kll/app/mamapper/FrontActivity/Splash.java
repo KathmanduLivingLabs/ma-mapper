@@ -3,17 +3,9 @@ package org.kll.app.mamapper.FrontActivity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
 import android.view.Window;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import org.kll.app.mamapper.R;
-
-import java.util.Timer;
-import java.util.TimerTask;
 
 /**
  * Created by Rahul Singh Maharjan on 10/18/16.
@@ -59,7 +51,7 @@ public class Splash extends Activity {
 
     private void endSplashScreen() {
 
-        Intent next = new Intent(Splash.this, MainActivitys.class);
+        Intent next = new Intent(Splash.this, MainActivity.class);
         next.putExtra("send", "school");
         startActivity(next);
         finish();

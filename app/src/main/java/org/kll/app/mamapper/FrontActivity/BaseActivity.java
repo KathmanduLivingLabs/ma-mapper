@@ -14,7 +14,6 @@ import android.view.View;
 import android.widget.FrameLayout;
 
 import org.kll.app.mamapper.Manipulation.ListActivity;
-import org.kll.app.mamapper.Manipulation.SettingsActivity;
 import org.kll.app.mamapper.R;
 
 public class BaseActivity extends AppCompatActivity implements
@@ -112,8 +111,25 @@ public class BaseActivity extends AppCompatActivity implements
         //noinspection SimplifiableIfStatement
         switch (id)
         {
-            case R.id.action_main:
-                /*startActivity(new Intent(this, MainActivity.class));*/
+            case R.id.select_hospital:
+                Intent hospital = new Intent(this, MainActivity.class);
+                hospital.putExtra("send", "hospital");
+                startActivity(hospital);
+                finish();
+                return true;
+
+            case R.id.select_school:
+                Intent school = new Intent(this, MainActivity.class);
+                school.putExtra("send", "school");
+                startActivity(school);
+                finish();
+                return true;
+
+            case R.id.select_bank:
+                Intent bank = new Intent(this, MainActivity.class);
+                bank.putExtra("send", "bank");
+                startActivity(bank);
+                finish();
                 return true;
 
             case R.id.list_edit_upload_delete :
@@ -127,13 +143,6 @@ public class BaseActivity extends AppCompatActivity implements
                 startActivity(lists);
                 return true;
 
-            case R.id.select_tags :
-                startActivity(new Intent(this, SettingsActivity.class));
-
-               /* Intent Hospital = new Intent(this, MainActivity.class);
-                Hospital.putExtra("Hospital", "hospital");
-                startActivity(Hospital);*/
-                return true;
         }
 
         return super.onOptionsItemSelected(item);
