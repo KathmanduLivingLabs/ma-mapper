@@ -13,7 +13,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 
-import org.kll.app.mamapper.Manipulation.ListActivity;
 import org.kll.app.mamapper.R;
 
 public class BaseActivity extends AppCompatActivity implements
@@ -130,17 +129,6 @@ public class BaseActivity extends AppCompatActivity implements
                 bank.putExtra("send", "bank");
                 startActivity(bank);
                 finish();
-                return true;
-
-            case R.id.list_edit_upload_delete :
-                startActivity(new Intent(this, ListActivity.class));
-
-                /*Intent School = new Intent(this, MainActivity.class);
-                School.putExtra("School", "school");
-                startActivity(School);*/
-
-                Intent lists = new Intent(this, ListActivity.class);
-                startActivity(lists);
                 return true;
 
         }

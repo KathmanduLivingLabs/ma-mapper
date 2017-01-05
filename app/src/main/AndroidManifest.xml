@@ -33,27 +33,23 @@
 
 
         <activity android:name="org.kll.app.mamapper.FrontActivity.BaseActivity"
-            android:label="@string/title_activity_base"
+            android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name="org.kll.app.mamapper.DialogsInterface.NetworkSettingDialog"
             android:label=""
             android:theme="@style/Theme.AppCompat.Dialog"/>
 
-        <activity android:name="org.kll.app.mamapper.Manipulation.DetailInfo"
-            android:label="@string/poi"
-            android:theme="@style/AppTheme.NoActionBar"/>
-
-        <activity android:name="org.kll.app.mamapper.Manipulation.EditActivity"
-            android:label="@string/poi_edit"
-            android:theme="@style/AppTheme.NoActionBar"/>
-
-        <activity android:name="org.kll.app.mamapper.Manipulation.ModifyActivity"
+        <activity android:name="org.kll.app.mamapper.Manipulation.EditSchool"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar"/>
 
-        <activity android:name="org.kll.app.mamapper.Manipulation.ListActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:label="@string/app_name"/>
+        <activity android:name="org.kll.app.mamapper.Manipulation.EditBank"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar"/>
+
+        <activity android:name="org.kll.app.mamapper.Manipulation.EditHospital"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar"/>
 
 
     </application>
