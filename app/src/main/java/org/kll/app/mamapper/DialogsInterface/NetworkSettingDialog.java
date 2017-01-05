@@ -21,7 +21,7 @@ public class NetworkSettingDialog extends Activity {
         super.onCreate(savedInstanceState);
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.dialog));
         alertDialog.setTitle("Network settings");
-        alertDialog.setMessage("No internet connection. Do you want to go to settings menu?");
+        alertDialog.setMessage("No internet connection. The app will not function properly without an internet connection. Do you want to go to settings menu?");
         alertDialog.setPositiveButton("Settings", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog,int which) {
                 Intent intent = new Intent(Settings.ACTION_WIFI_SETTINGS);

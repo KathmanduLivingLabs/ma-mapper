@@ -17,6 +17,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    dataBinding.enabled = true
 }
 repositories {
     maven {
@@ -41,13 +42,14 @@ dependencies {
     compile 'com.android.support:support-v4:24.2.0'
     compile 'com.android.volley:volley:1.0.0'
     compile 'com.github.MKergall:osmbonuspack:6.0'
-/*
-    compile(name:'osmbonuspack_v6.0', ext:'aar')*/
-
+    compile 'hu.supercluster:overpasser:0.2.2'
+    compile 'hu.supercluster:overpasser-retrofit-adapter:0.2.2'
     compile 'org.osmdroid:osmdroid-android:5.5:release@aar'
     compile 'org.apache.commons:commons-lang3:3.3.2'
     compile 'com.google.code.gson:gson:2.7'
     compile 'com.squareup.okhttp3:okhttp:3.4.1'
+    compile 'org.greenrobot:eventbus:3.0.0'
+    compile 'com.google.firebase:firebase-database:10.0.1'
 
     compile ('com.mapbox.mapboxsdk:mapbox-android-sdk:4.1.1@aar'){
         transitive=true
@@ -69,4 +71,7 @@ dependencies {
         compile 'org.osmdroid:osmdroid-android:5.5:release@aar'
     }
     testCompile 'junit:junit:4.12'
+
 }
+
+apply plugin: 'com.google.gms.google-services'

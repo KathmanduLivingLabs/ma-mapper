@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="org.kll.app.mamapper"
+    >
+
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CONNECTIVITY_CHANGE" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <service android:name="com.mapbox.mapboxsdk.telemetry.TelemetryService" />
+        <activity
+            android:theme="@android:style/Theme.Dialog"
+            android:name="org.kll.app.mamapper.FrontActivity.Splash">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name="org.kll.app.mamapper.FrontActivity.MainActivity"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar"/>
+
+
+        <activity android:name="org.kll.app.mamapper.FrontActivity.BaseActivity"
+            android:label="@string/title_activity_base"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name="org.kll.app.mamapper.DialogsInterface.NetworkSettingDialog"
+            android:label=""
+            android:theme="@style/Theme.AppCompat.Dialog"/>
+
+        <activity android:name="org.kll.app.mamapper.Manipulation.DetailInfo"
+            android:label="@string/poi"
+            android:theme="@style/AppTheme.NoActionBar"/>
+
+        <activity android:name="org.kll.app.mamapper.Manipulation.EditActivity"
+            android:label="@string/poi_edit"
+            android:theme="@style/AppTheme.NoActionBar"/>
+
+        <activity android:name="org.kll.app.mamapper.Manipulation.ModifyActivity"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar"/>
+
+        <activity android:name="org.kll.app.mamapper.Manipulation.ListActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:label="@string/app_name"/>
+
+
+    </application>
+
+</manifest>

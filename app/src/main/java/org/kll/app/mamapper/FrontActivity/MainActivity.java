@@ -1,4 +1,6 @@
 package org.kll.app.mamapper.FrontActivity;
+
+
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
@@ -11,21 +13,26 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.annotation.RequiresApi;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.res.ResourcesCompat;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 
+import org.greenrobot.eventbus.EventBus;
 import org.kll.app.mamapper.DialogsInterface.NetworkSettingDialog;
 import org.kll.app.mamapper.Location.GPSTracker;
+import org.kll.app.mamapper.Manipulation.EditBank;
+import org.kll.app.mamapper.Manipulation.EditHospital;
+import org.kll.app.mamapper.Manipulation.EditSchool;
+import org.kll.app.mamapper.Model.OverpassQueryResult;
+import org.kll.app.mamapper.Overpass.OverpassServiceProvider;
 import org.kll.app.mamapper.R;
 import org.osmdroid.api.IMapController;
 import org.osmdroid.bonuspack.clustering.RadiusMarkerClusterer;
@@ -38,15 +45,12 @@ import org.osmdroid.bonuspack.kml.KmlPoint;
 import org.osmdroid.bonuspack.kml.KmlPolygon;
 import org.osmdroid.bonuspack.kml.KmlTrack;
 import org.osmdroid.bonuspack.kml.Style;
-import org.osmdroid.bonuspack.location.NominatimPOIProvider;
-import org.osmdroid.bonuspack.location.POI;
 import org.osmdroid.events.MapEventsReceiver;
 import org.osmdroid.util.BoundingBox;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.MapEventsOverlay;
 import org.osmdroid.views.overlay.Marker;
-import org.osmdroid.views.overlay.Marker.OnMarkerDragListener;
 import org.osmdroid.views.overlay.Overlay;
 import org.osmdroid.views.overlay.Polygon;
 import org.osmdroid.views.overlay.Polyline;
@@ -58,22 +62,23 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+
 public class MainActivity extends BaseActivity implements MapEventsReceiver, MapView.OnFirstLayoutListener {
 
     MapView map;
+    IMapController mapController;
     KmlDocument mKmlDocument;
+    Context mContext;
 
-
-    String infoName;
-    String infoDiscription;
-
-    Drawable mPoiIcon;
-
+    Drawable markerIncomplete, markerComplete;
 
     GPSTracker gps;
 
     double latitude;
     double longitude;
+
+    OverpassQueryResult queryResult;
+    String mQuery, mGet;
 
 
     @Override
@@ -81,6 +86,8 @@ public class MainActivity extends BaseActivity implements MapEventsReceiver, Map
 
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
+
+        mContext = this;
 
         // Request permissions to support Android Marshmallow and above devices
         if (Build.VERSION.SDK_INT >= 23) {
@@ -100,44 +107,60 @@ public class MainActivity extends BaseActivity implements MapEventsReceiver, Map
         }
 
 
-
-
-        String get = getIntent().getStringExtra("send");
-        if (get.equals("school")) {
-            mPoiIcon = ResourcesCompat.getDrawable(getResources(), R.drawable.marker_school, null);
-        } else if (get.equals("bank")) {
-            mPoiIcon = ResourcesCompat.getDrawable(getResources(), R.drawable.marker_bank, null);
-        } else if (get.equals("hospital")) {
-            mPoiIcon = ResourcesCompat.getDrawable(getResources(), R.drawable.marker_hospital, null);
-        } else {
-            mPoiIcon = ResourcesCompat.getDrawable(getResources(), R.drawable.marker_poi_default, null);
+        mGet = getIntent().getStringExtra("send");
+        switch (mGet) {
+            case "school":
+                markerIncomplete = ResourcesCompat.getDrawable(getResources(), R.drawable.marker_school_incomplete, null);
+                markerComplete = ResourcesCompat.getDrawable(getResources(),R.drawable.marker_school_complete, null);
+                mQuery = "[out:json][timeout:25];(node[\"amenity\"=\"school\"](28.175382163920304,83.92026901245117,28.265077617741067,84.04300689697266););way[\"amenity\"=\"school\"](28.175382163920304,83.92026901245117,28.265077617741067,84.04300689697266);out body;>;out skel qt;";
+                break;
+            case "bank":
+                markerIncomplete = ResourcesCompat.getDrawable(getResources(), R.drawable.marker_bank_incomplete, null);
+                markerComplete = ResourcesCompat.getDrawable(getResources(), R.drawable.marker_bank_complete, null);
+                mQuery = "[out:json][timeout:25];(node[\"amenity\"=\"bank\"](28.175382163920304,83.92026901245117,28.265077617741067,84.04300689697266););way[\"amenity\"=\"bank\"](28.175382163920304,83.92026901245117,28.265077617741067,84.04300689697266);out body;>;out skel qt;";
+                break;
+            case "hospital":
+                markerIncomplete = ResourcesCompat.getDrawable(getResources(), R.drawable.marker_hospital_incomplete, null);
+                markerComplete = ResourcesCompat.getDrawable(getResources(),R.drawable.marker_hospital_complete,null);
+                mQuery = "[out:json][timeout:25];(node[\"amenity\"=\"hospital\"](28.175382163920304,83.92026901245117,28.265077617741067,84.04300689697266););way[\"amenity\"=\"hospital\"](28.175382163920304,83.92026901245117,28.265077617741067,84.04300689697266);out body;>;out skel qt;";
+                break;
+            default:
+                markerComplete = ResourcesCompat.getDrawable(getResources(), R.drawable.marker_poi_default, null);
+                break;
         }
 
 
         //defining maps and geolocation
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        if (!isNetworkAvailable()){
-            showNetworkSettingAlert();
-        }
         map = (MapView) findViewById(R.id.map);
         map.setBuiltInZoomControls(true);
         map.setMultiTouchControls(true);
+
+
         //GeoPoint startPoint = new GeoPoint(longitude, latitude);
-        GeoPoint startPoint = new GeoPoint(27.7360100, 85.3355140);
-        IMapController mapController = map.getController();
-        mapController.setZoom(16);
+        GeoPoint startPoint = new GeoPoint(28.2156, 83.9971);
+
+        mapController = map.getController();
+        mapController.setZoom(14);
         mapController.setCenter(startPoint);
 
 
+        if (!isNetworkAvailable()) {
+            showNetworkSettingAlert();
+        }else{
+            getMarkersAndPopulateMapView();
+        }
+    }
 
-        //Need to get degree for nominatim query (0.008 * distance in km )
-        double distance = (0.008 * 1);
 
-        //Using Nominatim
-        NominatimPOIProvider poiProvider = new NominatimPOIProvider("OsmNavigator/1.0");
-        ArrayList<POI> pois = poiProvider.getPOICloseTo(startPoint, get, 100, distance);
+    private void getMarkersAndPopulateMapView(){
 
+        try {
+            queryResult = OverpassServiceProvider.get().interpreter(mQuery).execute().body();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         // Marker Clustering
         RadiusMarkerClusterer poiMarkers = new RadiusMarkerClusterer(this);
@@ -150,34 +173,79 @@ public class MainActivity extends BaseActivity implements MapEventsReceiver, Map
         poiMarkers.mAnchorV = Marker.ANCHOR_BOTTOM;
         poiMarkers.mTextAnchorU = 0.70f;
         poiMarkers.mTextAnchorV = 0.27f;
+
         //end of 11.1
         map.getOverlays().add(poiMarkers);
-        if (pois != null) {
-            for (POI poi : pois) {
+        if (queryResult.elements != null) {
+            for (OverpassQueryResult.Element element : queryResult.elements) {
                 Marker poiMarker = new Marker(map);
-                poiMarker.setTitle(poi.mType);
-                poiMarker.setSnippet(poi.mDescription);
-                poiMarker.setPosition(poi.mLocation);
-                poiMarker.setPosition(poi.mLocation);
+                if (element.tags.amenity != null) {
+                    if (element.tags.name != null) {
+                        poiMarker.setTitle(element.tags.name);
+                    } else {
+                        poiMarker.setTitle(" ");
+                    }
+                    GeoPoint elementLocation = null;
+                    if (element.type.equals("way")) {
+                        for (OverpassQueryResult.Element innerElement : queryResult.elements) {
+                            if (innerElement.id == element.nodes.get(1)) {
+                                elementLocation = new GeoPoint(innerElement.lat, innerElement.lon);
+                            }
+                        }
 
-                poiMarker.setIcon(mPoiIcon);
-                if (poi.mThumbnail != null) {
-                    poiMarker.setImage(new BitmapDrawable(getResources(), poi.mThumbnail));
+                    } else {
+                        elementLocation = new GeoPoint(element.lat, element.lon);
+                    }
+                    poiMarker.setPosition(elementLocation);
+                    if (getCompletionStatus(element).equals("incomplete")){
+                        poiMarker.setIcon(markerIncomplete);
+                        poiMarker.setSnippet("Some data missing, click the button to complete it");
+                    }else{
+                        poiMarker.setIcon(markerComplete);
+                        poiMarker.setSnippet("Data is complete, click the button to review it");
+                    }
+                    poiMarker.setInfoWindow(new CustomInfoWindow(map));
+                    poiMarker.setRelatedObject(element);
+                    poiMarkers.add(poiMarker);
                 }
-
-                System.out.println(poi.mId);
-                poiMarker.setInfoWindow(new CustomInfoWindow(map));
-                poiMarker.setRelatedObject(poi);
-                poiMarkers.add(poiMarker);
             }
         }
+
         // Handling Map events
         MapEventsOverlay mapEventsOverlay = new MapEventsOverlay(this);
         map.getOverlays().add(0, mapEventsOverlay); //inserted at the "bottom" of all overlays
+
+    }
+
+    private String getCompletionStatus(OverpassQueryResult.Element element){
+        String status = "incomplete";
+        OverpassQueryResult.Element.Tags t = element.tags;
+        if (t.amenity.equals("hospital")){
+            Log.wtf("Hospital:", t.name + ":" + t.operatorType + ":" + t.facilityIcu + ":" + t.facilityNicu + ":"
+            + t.facilityOT + ":" + t.facilityventilator + ":" + t.facilityXray + ":" + t.emergency + ":" + t.emergencyService + ":"
+            + t.capacityBeds + ":" + t.personnelCount + ":" + t.phone + ":" + t.contactEmail + ":" + t.website + ":" + t.nepaliName);
+            if (t.name != null && t.operatorType != null && t.facilityIcu != null && t.facilityOT != null
+            && t.facilityventilator != null && t.facilityXray != null && t.emergency != null && t.capacityBeds != null
+                    && t.facilityNicu != null && t.personnelCount != null
+                    && t.phone != null && t.contactEmail != null && t.website != null && t.nepaliName != null ){
+                status = "complete";
+            }
+        } else if (t.amenity.equals("school")){
+            Log.wtf("School:", t.name + ":" + t.operator + ":" + t.personnelCount + ":" + t.studentCount + ":" + t.phone + ":" + t.website );
+            if (t.name != null && t.operator != null && t.personnelCount != null && t.studentCount != null && t.phone != null && t.website != null){
+                status = "complete";
+            }
+        } else if (t.amenity.equals("bank")) {
+            if (t.name != null && t.operator != null && t.phone != null && t.website != null && t.contactEmail != null && t.openingHours != null && t.atm != null) {
+                status = "complete";
+            }
+        }
+
+        return status;
     }
 
     private void showNetworkSettingAlert() {
-        Intent intent = new Intent(getApplicationContext(),NetworkSettingDialog.class);
+        Intent intent = new Intent(getApplicationContext(), NetworkSettingDialog.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         getApplicationContext().startActivity(intent);
     }
@@ -205,55 +273,33 @@ public class MainActivity extends BaseActivity implements MapEventsReceiver, Map
             map.zoomToBoundingBox(mInitialBoundingBox, false);
     }
 
-    //Using the Marker and Polyline overlays - advanced options
-    class OnMarkerDragListenerDrawer implements OnMarkerDragListener {
-        ArrayList<GeoPoint> mTrace;
-        Polyline mPolyline;
-
-        OnMarkerDragListenerDrawer() {
-            mTrace = new ArrayList<GeoPoint>(100);
-            mPolyline = new Polyline();
-            mPolyline.setColor(0xAA0000FF);
-            mPolyline.setWidth(2.0f);
-            mPolyline.setGeodesic(true);
-            map.getOverlays().add(mPolyline);
-        }
-
-        @Override public void onMarkerDrag(Marker marker) {
-            //mTrace.add(marker.getPosition());
-        }
-
-        @Override public void onMarkerDragEnd(Marker marker) {
-            mTrace.add(marker.getPosition());
-            mPolyline.setPoints(mTrace);
-            map.invalidate();
-        }
-
-        @Override public void onMarkerDragStart(Marker marker) {
-            //mTrace.add(marker.getPosition());
-        }
-    }
 
     //Customizing the bubble behaviour
     class CustomInfoWindow extends MarkerInfoWindow {
-        POI mSelectedPoi;
+
+        OverpassQueryResult.Element mSelectedPoi;
 
         public CustomInfoWindow(MapView mapView) {
             super(org.osmdroid.bonuspack.R.layout.bonuspack_bubble, mapView);
             Button btn = (Button) (mView.findViewById(org.osmdroid.bonuspack.R.id.bubble_moreinfo));
             btn.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View view) {
-                    if (mSelectedPoi.mUrl != null) {
-                        Intent myIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(mSelectedPoi.mUrl));
-                        view.getContext().startActivity(myIntent);
-                    } else {
-                        Intent DetailInfo = new Intent(MainActivity.this, org.kll.app.mamapper.Manipulation.DetailInfo.class);
-                        infoName = mSelectedPoi.mType;
-                        infoDiscription = mSelectedPoi.mDescription;
-                        DetailInfo.putExtra("DetailName", infoName);
-                        DetailInfo.putExtra("DetailDisc", infoDiscription);
-                        startActivity(DetailInfo);
-                        Toast.makeText(view.getContext(), "button clicked: "+ mSelectedPoi.mType, Toast.LENGTH_LONG).show();
+                    switch (mGet){
+                        case "school":
+                            Intent school = new Intent(mContext, EditSchool.class);
+                            EventBus.getDefault().postSticky(mSelectedPoi);
+                            mContext.startActivity(school);
+                            break;
+                        case "bank":
+                            Intent bank = new Intent(mContext, EditBank.class);
+                            EventBus.getDefault().postSticky(mSelectedPoi);
+                            mContext.startActivity(bank);
+                            break;
+                        case "hospital":
+                            Intent hospital = new Intent(mContext, EditHospital.class);
+                            EventBus.getDefault().postSticky(mSelectedPoi);
+                            mContext.startActivity(hospital);
+                            break;
                     }
                 }
             });
@@ -264,13 +310,13 @@ public class MainActivity extends BaseActivity implements MapEventsReceiver, Map
             super.onOpen(item);
             mView.findViewById(org.osmdroid.bonuspack.R.id.bubble_moreinfo).setVisibility(View.VISIBLE);
             Marker marker = (Marker) item;
-            mSelectedPoi = (POI) marker.getRelatedObject();
+            mSelectedPoi = (OverpassQueryResult.Element) marker.getRelatedObject();
 
-            // put thumbnail image in bubble, fetching the thumbnail in background:
+/*          // put thumbnail image in bubble, fetching the thumbnail in background:
             if (mSelectedPoi.mThumbnailPath != null) {
                 ImageView imageView = (ImageView) mView.findViewById(org.osmdroid.bonuspack.R.id.bubble_image);
                 mSelectedPoi.fetchThumbnailOnThread(imageView);
-            }
+            }*/
         }
     }
 
@@ -310,47 +356,6 @@ public class MainActivity extends BaseActivity implements MapEventsReceiver, Map
         }
     }
 
-    //Loading KML content - Advanced styling with Styler
-    class MyKmlStyler implements KmlFeature.Styler {
-        Style mDefaultStyle;
-
-        MyKmlStyler(Style defaultStyle) {
-            mDefaultStyle = defaultStyle;
-        }
-
-        @Override
-        public void onLineString(Polyline polyline, KmlPlacemark kmlPlacemark, KmlLineString kmlLineString) {
-            //Custom styling:
-            polyline.setColor(Color.GREEN);
-            polyline.setWidth(Math.max(kmlLineString.mCoordinates.size() / 200.0f, 3.0f));
-        }
-
-        @Override
-        public void onPolygon(Polygon polygon, KmlPlacemark kmlPlacemark, KmlPolygon kmlPolygon) {
-            //Keeping default styling:
-            kmlPolygon.applyDefaultStyling(polygon, mDefaultStyle, kmlPlacemark, mKmlDocument, map);
-        }
-
-        @Override
-        public void onTrack(Polyline polyline, KmlPlacemark kmlPlacemark, KmlTrack kmlTrack) {
-            //Keeping default styling:
-            kmlTrack.applyDefaultStyling(polyline, mDefaultStyle, kmlPlacemark, mKmlDocument, map);
-        }
-
-        @Override
-        public void onPoint(Marker marker, KmlPlacemark kmlPlacemark, KmlPoint kmlPoint) {
-            //Styling based on ExtendedData properties:
-            if (kmlPlacemark.getExtendedData("maxspeed") != null)
-                kmlPlacemark.mStyle = "maxspeed";
-            kmlPoint.applyDefaultStyling(marker, mDefaultStyle, kmlPlacemark, mKmlDocument, map);
-        }
-
-        @Override
-        public void onFeature(Overlay overlay, KmlFeature kmlFeature) {
-            //If nothing to do, do nothing.
-        }
-    }
-
     //Handling Map events
     @Override
     public boolean singleTapConfirmedHelper(GeoPoint p) {
@@ -361,7 +366,8 @@ public class MainActivity extends BaseActivity implements MapEventsReceiver, Map
 
     float mGroundOverlayBearing = 0.0f;
 
-    @Override public boolean longPressHelper(GeoPoint p) {
+    @Override
+    public boolean longPressHelper(GeoPoint p) {
         map.invalidate();
         return true;
     }

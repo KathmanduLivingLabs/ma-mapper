@@ -6,6 +6,7 @@
     android:background="@drawable/bonuspack_bubble"
     android:id="@+id/bubble_layout">
     <ImageView android:id="@+id/bubble_image"
+        android:padding="15dp"
         android:layout_width="65dp"
         android:layout_height="65dp"
         android:visibility="gone" />
@@ -13,41 +14,45 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingLeft="5dp"
-        android:orientation="vertical" >
+        android:orientation="horizontal" >
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal" >
+            android:orientation="vertical"
+            android:layout_gravity="left"
+            android:layout_weight="1">
             <TextView android:id="@+id/bubble_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="#000000"
+                android:textSize="17sp"
+                android:textStyle="bold"
                 android:maxEms="17"
-                android:layout_gravity="left"
-                android:layout_weight="1"
                 android:text="Title" />
-            <Button android:id="@+id/bubble_moreinfo"
-                android:background="@drawable/btn_moreinfo"
-                android:visibility="gone"
+
+            <TextView android:id="@+id/bubble_description"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="right"
-                android:layout_weight="0" />
+                android:textColor="#000000"
+                android:textSize="13sp"
+                android:maxEms="17"
+                android:text="Description" />
+
+            <TextView android:id="@+id/bubble_subdescription"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#000000"
+                android:textSize="10dp"
+                android:maxEms="17"
+                android:text="Address"
+                android:visibility="gone" />
+
         </LinearLayout>
-        <TextView android:id="@+id/bubble_description"
+        <Button android:id="@+id/bubble_moreinfo"
+            android:background="@drawable/edit_button"
+            android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="#000000"
-            android:textSize="12dp"
-            android:maxEms="17"
-            android:text="Description" />
-        <TextView android:id="@+id/bubble_subdescription"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="#000000"
-            android:textSize="10dp"
-            android:maxEms="17"
-            android:text="Address"
-            android:visibility="gone" />
+            android:layout_gravity="right" />
     </LinearLayout>
 </LinearLayout>

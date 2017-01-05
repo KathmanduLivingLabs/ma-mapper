@@ -1,0 +1,27 @@
+<resources>
+    <string name="app_name"> म म्यापर  </string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="action_settings">Settings</string>
+    <string name="access_token">pk.eyJ1IjoicmFodWxsYWIiLCJhIjoiY2l1aTgyaTY1MDA3NDJ0cWx6NGN1cjliNiJ9.AH_duucMBo1ifZdEBXcbMw</string>
+    <string name="ktm">Kathmandu</string>
+    <string name="title_activity_base">BaseActivity</string>
+    <string name="nav_drawer_opened">drawer opened</string>
+    <string name="nav_drawer_closed">drawer closed</string>
+    <string name="name">Name</string>
+    <string name="infoname">text</string>
+    <string name="infodisc">Description</string>
+    <string name="infodisc_text">text</string>
+
+    <string name="add_info">Add Info</string>
+
+    <string name="empty_list_text">Edit/Modify/Upload List</string>
+    <string name="add_record">add</string>
+    <string name="poi">Point of Interest</string>
+    <string name="poi_edit">Edit POI</string>
+    <string name="enter_title">Name</string>
+    <string name="enter_desc">Description</string>
+    <string name="btn_update">Update</string>
+    <string name="btn_delete">Delete</string>
+    <string name="enter_contact">Phone Number</string>
+</resources>
